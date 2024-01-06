@@ -175,8 +175,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Helps with flipping which side is considered the "front" of the robot
   enum DIRECTION {
-    INTAKE_FRONT(1),
-    EXTENDER_FRONT(-1);
+    INTAKE_FRONT(1);
 
     public int direction;
 

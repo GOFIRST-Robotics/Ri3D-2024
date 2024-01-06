@@ -17,14 +17,11 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import frc.robot.commands.autonomous.BalanceBeamAutonomous;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
-import frc.robot.commands.autonomous.PlaceCubeAutonomous;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExtenderSubsystem;
-import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDMode;
 import frc.robot.subsystems.VisionSubsystem;
@@ -41,13 +38,9 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>(); // Create a chooser to select an autonomous command
 
-  public static SendableChooser<Boolean> toggleExtenderPID = new SendableChooser<Boolean>(); // Create a chooser to toggle whether the extender default command should run
-
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
-  public static final GrabberSubsystem m_grabberSubsystem = new GrabberSubsystem(); // Grabs both cubes and cones
-  public static final ExtenderSubsystem m_extenderSubsystem = new ExtenderSubsystem(); // Used to reach out and score with the grabber
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
   
@@ -63,22 +56,14 @@ public class Robot extends TimedRobot {
     // Add our Autonomous Routines to the chooser //
 		autonChooser.setDefaultOption("Default Auto", new AutonomousMode_Default());
 		autonChooser.addOption("Balance Beam Auto", new BalanceBeamAutonomous());
-		autonChooser.addOption("Place Object Auto", new PlaceCubeAutonomous());
     autonChooser.addOption("Square Auto", new SquareAutonomous());
     autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
 		SmartDashboard.putData("Auto Mode", autonChooser);
-
-    // Add chooser options for toggling the Extender default command on/off //
-    toggleExtenderPID.setDefaultOption("OFF", false);
-    toggleExtenderPID.addOption("ON", true);
-
-    SmartDashboard.putData("Extender PID Control", toggleExtenderPID);
 
     m_driveSubsystem.setDefaultCommand(new DriveCommand());
 
     // Zero the gyro and reset encoders
     m_driveSubsystem.zeroGyro();
-    m_extenderSubsystem.resetEncoder();
   }
 
   /**
@@ -95,7 +80,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Extender Position", m_extenderSubsystem.getEncoderPosition());
     SmartDashboard.putNumber("Gyroscope Pitch", m_driveSubsystem.getPitch());
   }
 
@@ -117,7 +101,6 @@ public class Robot extends TimedRobot {
     // Zero the gyro and reset encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
-    m_extenderSubsystem.resetEncoder();
 
     // schedule the selected autonomous command
     if (m_autonomousCommand != null) {
@@ -141,7 +124,6 @@ public class Robot extends TimedRobot {
 
     // Zero the gyro and reset encoders
     m_driveSubsystem.zeroGyro();
-    m_extenderSubsystem.resetEncoder();
     m_driveSubsystem.resetEncoders();
     m_LEDSubsystem.setLEDMode(LEDMode.GREEN); // Green is the best color for tracking retroreflective tape
   }
@@ -166,20 +148,6 @@ public class Robot extends TimedRobot {
    * or {@link XboxController}), and then passing it to a {@link edu.wpi.first.wpilibj2.command.button.Trigger}.
    */
   private void configureButtonBindings() {
-    // Pneumatic Piston Controls //
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).onTrue(new InstantCommand(() -> m_grabberSubsystem.toggle()));
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_extenderSubsystem.toggleExtenderRaiser()));
-
-    // Extender Controls //
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_extenderSubsystem.changeSetpoint(0)));
-    new POVButton(controller, 180).onTrue(new InstantCommand(() -> m_extenderSubsystem.changeSetpoint(1)));
-    new POVButton(controller, 90).onTrue(new InstantCommand(() -> m_extenderSubsystem.incrementSetPoint()));
-    new POVButton(controller, 0).onTrue(new InstantCommand(() -> m_extenderSubsystem.changeSetpoint(4)));
-    new POVButton(controller, 270).onTrue(new InstantCommand(() -> m_extenderSubsystem.decrementSetPoint()));
-    // Manual Extender Control //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_extenderSubsystem.setPower(Constants.EXTENDER_POWER), () -> m_extenderSubsystem.stop()));
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_extenderSubsystem.setPower(-Constants.EXTENDER_POWER), () -> m_extenderSubsystem.stop()));
-
     // Drivetrain Controls //
     new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection()));
     new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new BalanceOnBeamCommand());

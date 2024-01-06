@@ -37,8 +37,6 @@ public final class Constants {
     public static final int START_BUTTON = 10;
 
     // Talon SRX CAN IDs //
-    public static final int EXTENDER_MOTOR_1_ID = 20;
-    public static final int EXTENDER_MOTOR_2_ID = 10;
 
     // Victor PWM Ports //
     public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 0;
@@ -47,12 +45,6 @@ public final class Constants {
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
     // Other PWM Ports //
     public static final int LED_PWM_ID = 4;
-    
-    // PCM (Pneumatics Control Module) Channels //
-    public static final int GRABBER_SOLENOID_ID_1 = 4;
-    public static final int GRABBER_SOLENOID_ID_2 = 5;
-    public static final int EXTENDER_SOLENOID_ID_1 = 3;
-    public static final int EXTENDER_SOLENOID_ID_2 = 1;
     
     // DIO (Digital Input/Output) Channels //
     public static final int RIGHT_ENCODER_CHANNEL_A = 0;
@@ -75,14 +67,6 @@ public final class Constants {
     public static final double DRIVE_TURNING_THRESHOLD_DEGREES = 3;
     public static final int LEFT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder 
     public static final int RIGHT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder 
-
-    // Extender Constants //
-    public static final boolean EXTENDER_INVERT = true;
-    public static final double EXTENDER_POWER = 0.8;
-    public static final int EXTENDER_TIMEOUT = 0; // timeout in ms; set to zero
-	public static final int EXTENDER_PIDIDX = 0; // used for cascading PID; set to zero
-	public static final int EXTENDER_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder 
-	public static final boolean EXTENDER_SENSOR_PHASE = true; // Reverse this if the encoder is counting 'backwards' relative to the motor
 
     // Apriltag Vision Constants //
     public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7);
