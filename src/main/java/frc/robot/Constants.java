@@ -37,6 +37,7 @@ public final class Constants {
     public static final int START_BUTTON = 10;
 
     // Talon SRX CAN IDs //
+    public static final int FEEDER_WHEEL_MOTOR_ID = 1; // TODO: Set this
 
     // Victor PWM Ports //
     public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 0;
@@ -45,10 +46,10 @@ public final class Constants {
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
 
     // Spark CAN IDs //
-    public static final int CAPTURE_ROLLER_MOTOR_ID = 0; // TODO set
-    public static final int BELT_MOTOR_ID = 0; // TODO set
-    public static final int FLY_WHEEL_MOTOR_ID = 0; // TODO set
-    public static final int CLIMBER_MOTOR_ID = 0; // TODO set
+    public static final int CAPTURE_ROLLER_MOTOR_ID = 1; // TODO: Set this
+    public static final int BELT_MOTOR_ID = 1; // TODO: Set this
+    public static final int FLY_WHEEL_MOTOR_ID = 1; // TODO: Set this
+    public static final int CLIMBER_MOTOR_ID = 1; // TODO: Set this
 
     // Other PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -76,16 +77,17 @@ public final class Constants {
     public static final int RIGHT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder 
 
     // Feeder Constants //
-    public static final boolean CAPTURE_ROLLER_INVERT = false; // TODO set
-    public static final boolean BELT_INVERT = true; // TODO set
+    public static final boolean CAPTURE_ROLLER_INVERT = false;
+    public static final boolean BELT_INVERT = true;
 
     // Climber Constants //
-    public static final boolean CLIMBER_INVERT = false; // TODO set
-    public static final double CLIMBER_DEFAULT_SPEED = 0.7; // TODO: Adjust this
+    public static final boolean CLIMBER_INVERT = false;
+    public static final double CLIMBER_DEFAULT_SPEED = 0.8;
 
     // Launcher Constants //
-    public static final boolean FLY_WHEEL_INVERT = false; // TODO set
-    public static final double FLY_WHEEL_DEFAULT_SPEED = 0.7; // TODO: Adjust this
+    public static final boolean FLY_WHEEL_INVERT = false;
+    public static final double FLY_WHEEL_DEFAULT_SPEED = 0.8;
+    public static final boolean FEEDER_WHEEL_INVERT = false;
 
     // Apriltag Vision Constants //
     public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7);

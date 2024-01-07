@@ -5,6 +5,8 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,14 +16,17 @@ public class LauncherSubsystem extends SubsystemBase {
   
   // Launcher Motor Controllers
   private CANSparkMax m_flyWheel; // NEO motor
+  private TalonSRX m_feederWheel; // BAG DC motor
 
   /** Subsystem for controlling the launcher fly wheel */
   public LauncherSubsystem() {
-    // Instantiate the fly wheel motor controllers
+    // Instantiate the launcher motor controllers
     m_flyWheel = new CANSparkMax(Constants.FLY_WHEEL_MOTOR_ID, MotorType.kBrushless);
+    m_feederWheel = new TalonSRX(Constants.FEEDER_WHEEL_MOTOR_ID);
 
     // Reverse it if needed
     m_flyWheel.setInverted(Constants.FLY_WHEEL_INVERT);
+    m_feederWheel.setInverted(Constants.FEEDER_WHEEL_INVERT);
 
     // Logging
     SmartDashboard.putNumber("Fly Wheel Speed", Constants.FLY_WHEEL_DEFAULT_SPEED);
@@ -34,6 +39,7 @@ public class LauncherSubsystem extends SubsystemBase {
 
   public void stop() {
     m_flyWheel.set(0);
+    m_feederWheel.set(TalonSRXControlMode.PercentOutput, 0);
   }
 
   @Override
