@@ -1,5 +1,5 @@
 // Author: UMN Robotics Ri3d
-// Last Updated : January 2023
+// Last Updated : January 2024
 
 package frc.robot.subsystems;
 
@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class FeederSubsystem extends SubsystemBase {
   
   // Drivetrain Motor Controllers
-  private CANSparkMax m_captureRoller; // NEO 550 motor
-  private CANSparkMax m_belt; // NEO 550 motor
+  private CANSparkMax m_lowerIntakeBar; // NEO 550 motor
+  private CANSparkMax m_upperIntakeBar; // NEO 550 motor
 
   // Speed Control Chooser
   SendableChooser<Double> beltSpeedChooser = new SendableChooser<Double>();
@@ -24,12 +24,12 @@ public class FeederSubsystem extends SubsystemBase {
   /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
   public FeederSubsystem() {
     // Instantiate the Drivetrain motor controllers
-    m_captureRoller = new CANSparkMax(Constants.CAPTURE_ROLLER_MOTOR_ID, MotorType.kBrushless);
-    m_belt = new CANSparkMax(Constants.BELT_MOTOR_ID, MotorType.kBrushless);
+    m_lowerIntakeBar = new CANSparkMax(Constants.CAPTURE_ROLLER_MOTOR_ID, MotorType.kBrushless);
+    m_upperIntakeBar = new CANSparkMax(Constants.BELT_MOTOR_ID, MotorType.kBrushless);
 
     // Reverse some of the motors if needed
-    m_captureRoller.setInverted(Constants.CAPTURE_ROLLER_INVERT);
-    m_belt.setInverted(Constants.BELT_INVERT);
+    m_lowerIntakeBar.setInverted(Constants.CAPTURE_ROLLER_INVERT);
+    m_upperIntakeBar.setInverted(Constants.BELT_INVERT);
 
     // Belt Speed Options //
     captureWheelChooser.addOption("100%", 1.0);
@@ -49,28 +49,28 @@ public class FeederSubsystem extends SubsystemBase {
 
   /* Set power to the drivetrain motor */
   public void capture() {
-    m_captureRoller.set(captureWheelChooser.getSelected());
+    m_lowerIntakeBar.set(captureWheelChooser.getSelected());
   }
 
   public void stopCapture() {
-    m_captureRoller.set(0);
+    m_lowerIntakeBar.set(0);
   }
 
   public void feed() {
-    m_belt.set(beltSpeedChooser.getSelected());
+    m_upperIntakeBar.set(beltSpeedChooser.getSelected());
   }
 
   public void reverseFeed() {
-    m_belt.set(beltSpeedChooser.getSelected());
+    m_upperIntakeBar.set(beltSpeedChooser.getSelected());
   }
 
   public void stopFeed() {
-    m_belt.set(0);
+    m_upperIntakeBar.set(0);
   }
 
   public void stop() {
-    m_captureRoller.set(0);
-    m_belt.set(0);
+    m_lowerIntakeBar.set(0);
+    m_upperIntakeBar.set(0);
   }
 
 
