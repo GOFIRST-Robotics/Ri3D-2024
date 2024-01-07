@@ -40,8 +40,8 @@ public final class Constants {
 
     // Victor PWM Ports //
     public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 0;
-    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 3;
-    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 1;
+    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 1;
+    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 3;
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
 
     // Spark CAN IDs //
@@ -54,7 +54,7 @@ public final class Constants {
     
     // DIO (Digital Input/Output) Channels //
     public static final int RIGHT_ENCODER_CHANNEL_A = 0;
-    public static final int RIGHT_ENCODER_CHANNEL_B = 2;
+    public static final int RIGHT_ENCODER_CHANNEL_B = 1;
     public static final int LEFT_ENCODER_CHANNEL_A = 2;
     public static final int LEFT_ENCODER_CHANNEL_B = 3;
 
