@@ -4,15 +4,19 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.BalanceBeamAutonomous;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
@@ -158,5 +162,22 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection()));
     new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new BalanceOnBeamCommand());
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(2, true));
+
+    // Climber Controls //
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_climbSubsystem.changeSetpoint(0)));
+    new POVButton(controller, 180).onTrue(new InstantCommand(() -> m_climbSubsystem.changeSetpoint(1)));
+    new POVButton(controller, 90).onTrue(new InstantCommand(() -> m_climbSubsystem.incrementSetPoint()));
+    new POVButton(controller, 0).onTrue(new InstantCommand(() -> m_climbSubsystem.changeSetpoint(4)));
+    new POVButton(controller, 270).onTrue(new InstantCommand(() -> m_climbSubsystem.decrementSetPoint()));
+    // Manual Climber Control //
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
+
+    // Launcher Controls //
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
+
+    // Feeder Controls //
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_feedSubsystem.capture(), () -> m_feedSubsystem.stopCapture()));
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_feedSubsystem.feed(), () -> m_feedSubsystem.stop()));
   }
 }
