@@ -6,8 +6,6 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,28 +37,14 @@ public class ClimberSubsystem extends SubsystemBase {
     m_climber.set(SmartDashboard.getNumber("Climber Speed", Constants.CLIMBER_DEFAULT_SPEED));
   }
 
+  public void setPower(double power) {
+    m_climber.set(power);
+  }
+  
   public void stop() {
     m_climber.set(0);
   }
 
-  // Methods for changing the setpoint/goal of this subsystem's default command //
-  public int getCurrentSetPoint() {
-    return currentSetpoint;
-  }
-  public void changeSetpoint(int newSetPoint) {
-    if (newSetPoint <= 4 && newSetPoint >= 0) {
-      currentSetpoint = newSetPoint;
-    }
-  }
-  public void incrementSetPoint() {
-    currentSetpoint = Math.min(currentSetpoint + 1, 4);
-  }
-  public void decrementSetPoint() {
-    currentSetpoint = Math.max(currentSetpoint - 1, 0);
-  }
-
   @Override
-  public void periodic() {
-
-  }
+  public void periodic() {}
 }
