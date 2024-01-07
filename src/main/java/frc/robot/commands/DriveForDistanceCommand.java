@@ -43,7 +43,7 @@ public class DriveForDistanceCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_DriveSubsystem.stop(); // Stop the rivetrain motors
+    m_DriveSubsystem.stop(); // Stop the drivetrain motors
   }
 
   // Returns true when the command should end.
