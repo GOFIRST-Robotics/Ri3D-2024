@@ -80,7 +80,9 @@ public final class Constants {
 
     // Feeder Constants //
     public static final boolean CAPTURE_ROLLER_INVERT = false;
+    public static final double CAPTURE_ROLLER_DEFAULT_SPEED = 0.8;
     public static final boolean BELT_INVERT = true;
+    public static final double BELT_DEFAULT_SPEED = 0.8;
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
