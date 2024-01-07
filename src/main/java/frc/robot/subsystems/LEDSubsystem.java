@@ -27,8 +27,8 @@ public class LEDSubsystem extends SubsystemBase {
 
   // Declare the preset LED modes we want to use
   public enum LEDMode {
-    TELEOP(_____);
-    AUTO(_____);
+    TELEOP(0.41),
+    AUTO(-0.99);
   
     public double pwmSignal;
   
