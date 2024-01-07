@@ -87,6 +87,8 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("Gyroscope Pitch", m_driveSubsystem.getPitch());
+    SmartDashboard.putNumber("Gyroscope Yaw", m_driveSubsystem.getYaw());
+    SmartDashboard.putNumber("Gyroscope Roll", m_driveSubsystem.getRoll());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
