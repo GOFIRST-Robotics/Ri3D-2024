@@ -68,15 +68,20 @@ public class IntakeSubsystem extends SubsystemBase {
     m_upperIntakeBar.set(0);
   }
 
+  public void setCapturePower(double power) {
+    m_lowerIntakeBar.set(power);
+  }
+
+  public void setBeltPower(double power) {
+    m_upperIntakeBar.set(power);
+  }
+
   public void stop() {
     m_lowerIntakeBar.set(0);
     m_upperIntakeBar.set(0);
   }
 
-
-
   @Override
-  public void periodic() {
-  }
+  public void periodic() {}
 
 }

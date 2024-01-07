@@ -48,10 +48,10 @@ public final class Constants {
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
 
     // Spark CAN IDs //
-    public static final int CAPTURE_ROLLER_MOTOR_ID = 1; // TODO: Set this
-    public static final int BELT_MOTOR_ID = 1; // TODO: Set this
-    public static final int FLY_WHEEL_MOTOR_ID = 1; // TODO: Set this
-    public static final int CLIMBER_MOTOR_ID = 1; // TODO: Set this
+    public static final int CAPTURE_ROLLER_MOTOR_ID = 10; // TODO: Set this
+    public static final int BELT_MOTOR_ID = 11; // TODO: Set this
+    public static final int FLY_WHEEL_MOTOR_ID = 12; // TODO: Set this
+    public static final int CLIMBER_MOTOR_ID = 13; // TODO: Set this
 
     // Other PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -80,7 +80,9 @@ public final class Constants {
 
     // Feeder Constants //
     public static final boolean CAPTURE_ROLLER_INVERT = false;
+    public static final double CAPTURE_ROLLER_DEFAULT_SPEED = 0.8;
     public static final boolean BELT_INVERT = true;
+    public static final double BELT_DEFAULT_SPEED = 0.8;
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;

@@ -118,6 +118,10 @@ public class LauncherSubsystem extends SubsystemBase {
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, power);
   }
 
+  public double getFlyWheelSpeed() {
+    return m_flyWheel.getEncoder().getVelocity();
+  }
+
   public void stop() {
     m_flyWheel.set(0);
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, 0);

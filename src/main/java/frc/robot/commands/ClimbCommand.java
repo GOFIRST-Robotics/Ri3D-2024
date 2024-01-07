@@ -30,4 +30,10 @@ public class ClimbCommand extends Command {
             m_subsystem.stop();
         }
     }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        m_subsystem.stop(); // Stops the climber motor
+    }
 }
