@@ -22,7 +22,9 @@ import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeedSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDMode;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.commands.BalanceOnBeamCommand;
@@ -41,6 +43,8 @@ public class Robot extends TimedRobot {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
+  public static final FeedSubsystem m_feedSubsystem = new FeedSubsystem(); // Feed subsystem
+  public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(); // Launcher subsystem
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
   
