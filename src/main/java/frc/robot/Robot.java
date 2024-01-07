@@ -25,7 +25,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDMode;
@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
-  public static final FeederSubsystem m_feedSubsystem = new FeederSubsystem(); // Feeder subsystem
+  public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
   public static final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem(); // Climber subsystem
   public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(); // Launcher subsystem
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
@@ -177,7 +177,7 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
 
     // Feeder Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_feedSubsystem.capture(), () -> m_feedSubsystem.stopCapture()));
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_feedSubsystem.feed(), () -> m_feedSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_intakeSubsystem.capture(), () -> m_intakeSubsystem.stopCapture()));
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_intakeSubsystem.feed(), () -> m_intakeSubsystem.stop()));
   }
 }
