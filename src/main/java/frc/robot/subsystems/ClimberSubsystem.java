@@ -15,10 +15,15 @@ public class ClimberSubsystem extends SubsystemBase {
   // Climber Motor Controllers
   private CANSparkMax m_climber; // NEO motor
 
+  // Variables for encoder PID
+  public int currentSetpoint;
+
+
   /** Subsystem for controlling the climber */
   public ClimberSubsystem() {
     // Instantiate the climber motor controllers
     m_climber = new CANSparkMax(Constants.CLIMBER_MOTOR_ID, MotorType.kBrushless);
+    
 
     // Reverse it if needed
     m_climber.setInverted(Constants.CLIMBER_INVERT);
@@ -32,12 +37,14 @@ public class ClimberSubsystem extends SubsystemBase {
     m_climber.set(SmartDashboard.getNumber("Climber Speed", Constants.CLIMBER_DEFAULT_SPEED));
   }
 
+  public void setPower(double power) {
+    m_climber.set(power);
+  }
+  
   public void stop() {
     m_climber.set(0);
   }
 
   @Override
-  public void periodic() {
-
-  }
+  public void periodic() {}
 }

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class FeederSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   
   // Drivetrain Motor Controllers
   private CANSparkMax m_lowerIntakeBar; // NEO 550 motor
@@ -22,7 +22,7 @@ public class FeederSubsystem extends SubsystemBase {
   SendableChooser<Double> captureWheelChooser = new SendableChooser<Double>();
 
   /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
-  public FeederSubsystem() {
+  public IntakeSubsystem() {
     // Instantiate the Drivetrain motor controllers
     m_lowerIntakeBar = new CANSparkMax(Constants.CAPTURE_ROLLER_MOTOR_ID, MotorType.kBrushless);
     m_upperIntakeBar = new CANSparkMax(Constants.BELT_MOTOR_ID, MotorType.kBrushless);
@@ -68,15 +68,20 @@ public class FeederSubsystem extends SubsystemBase {
     m_upperIntakeBar.set(0);
   }
 
+  public void setCapturePower(double power) {
+    m_lowerIntakeBar.set(power);
+  }
+
+  public void setBeltPower(double power) {
+    m_upperIntakeBar.set(power);
+  }
+
   public void stop() {
     m_lowerIntakeBar.set(0);
     m_upperIntakeBar.set(0);
   }
 
-
-
   @Override
-  public void periodic() {
-  }
+  public void periodic() {}
 
 }

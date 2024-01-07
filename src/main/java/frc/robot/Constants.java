@@ -25,6 +25,8 @@ public final class Constants {
     public static final int RIGHT_HORIZONTAL_JOYSTICK_AXIS = 4;
     public static final int LEFT_VERTICAL_JOYSTICK_AXIS = 1;
     public static final int LEFT_HORIZONTAL_JOYSTICK_AXIS = 0;
+    public static final int UP_ARROW_AXIS = 2;
+    public static final int DOWN_ARROW_AXIS = 3;
     public static final int X_BUTTON = 1;
     public static final int A_BUTTON = 2;
     public static final int B_BUTTON = 3;
@@ -78,7 +80,9 @@ public final class Constants {
 
     // Feeder Constants //
     public static final boolean CAPTURE_ROLLER_INVERT = false;
+    public static final double CAPTURE_ROLLER_DEFAULT_SPEED = 0.8;
     public static final boolean BELT_INVERT = true;
+    public static final double BELT_DEFAULT_SPEED = 0.8;
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
@@ -88,6 +92,7 @@ public final class Constants {
     public static final boolean FLY_WHEEL_INVERT = false;
     public static final double FLY_WHEEL_DEFAULT_SPEED = 0.8;
     public static final boolean FEEDER_WHEEL_INVERT = false;
+    public static final double FEEDER_WHEEL_DEFAULT_SPEED = 0.8;
 
     // Apriltag Vision Constants //
     public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7);

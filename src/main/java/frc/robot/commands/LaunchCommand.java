@@ -3,6 +3,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,7 +18,26 @@ public class LaunchCommand extends Command {
     }
 
     @Override
-    public void initialize() {
+    public void initialize() {}
 
+    @Override
+    public void execute() {
+        double targetSpeed = Constants.FLY_WHEEL_DEFAULT_SPEED;
+
+        if (Robot.controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)) {
+            m_subsystem.flyWheelPower(targetSpeed);
+        }
+
+        double currentSpeed = m_subsystem.getFlyWheelSpeed();
+
+        if (currentSpeed == targetSpeed) {
+            m_subsystem.feederWheelPower(Constants.FEEDER_WHEEL_DEFAULT_SPEED);
+        }
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        m_subsystem.stop(); // Stop the flywheel and feeder wheel motors
     }
 }

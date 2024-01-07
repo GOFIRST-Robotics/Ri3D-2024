@@ -3,21 +3,37 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ClimbCommand extends Command {
-    private FeederSubsystem m_subsystem;
+    private ClimberSubsystem m_subsystem;
 
-    /** Default feed command: runs the feed when a disc is intaked until it is ready to be shot. */
+    /** Default command */
     public ClimbCommand() {
-        m_subsystem = Robot.m_feedSubsystem;
+        m_subsystem = Robot.m_climbSubsystem;
         addRequirements(m_subsystem);
     }
 
     @Override
-    public void initialize() {
+    public void initialize() {}
 
+    @Override
+    public void execute() {
+        if (Robot.controller.getRawButton(Constants.UP_ARROW_AXIS)) {
+            m_subsystem.setPower(Constants.CLIMBER_DEFAULT_SPEED);
+        } else if (Robot.controller.getRawButton(Constants.DOWN_ARROW_AXIS)) {
+            m_subsystem.setPower(-Constants.CLIMBER_DEFAULT_SPEED);
+        } else {
+            m_subsystem.stop();
+        }
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        m_subsystem.stop(); // Stops the climber motor
     }
 }

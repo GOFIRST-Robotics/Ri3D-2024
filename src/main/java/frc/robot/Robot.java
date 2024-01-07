@@ -10,12 +10,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.BalanceBeamAutonomous;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
@@ -24,7 +27,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDMode;
@@ -45,11 +48,13 @@ public class Robot extends TimedRobot {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
-  public static final FeederSubsystem m_feedSubsystem = new FeederSubsystem(); // Feeder subsystem
+  public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
   public static final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem(); // Climber subsystem
   public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(); // Launcher subsystem
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
+
+  boolean launchStarted = false;
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -121,6 +126,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    // Set the LED pattern for autonomous
+    m_LEDSubsystem.setLEDMode(LEDMode.AUTO);
   }
 
   /** This function is called periodically during autonomous. */
@@ -140,7 +148,9 @@ public class Robot extends TimedRobot {
     // Zero the gyro and reset encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
-    m_LEDSubsystem.setLEDMode(LEDMode.GREEN); // Green is the best color for tracking retroreflective tape
+
+    // Set the LED pattern for teleop
+    m_LEDSubsystem.setLEDMode(LEDMode.TELEOP);
   }
 
   /** This function is called periodically during operator control. */
@@ -167,5 +177,15 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection()));
     new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new BalanceOnBeamCommand());
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(2, true));
+
+    // Climber Controls //
+    new Trigger(() -> controller.getRawButton(Constants.UP_ARROW_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.DOWN_ARROW_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
+
+    // Launcher Controls //
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
+
+    // Feeder Controls //
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> {m_intakeSubsystem.capture(); m_intakeSubsystem.feed();}, () -> m_intakeSubsystem.stop()));
   }
 }
