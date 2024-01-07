@@ -11,19 +11,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class FeedSubsystem extends SubsystemBase {
+public class FeederSubsystem extends SubsystemBase {
   
   // Drivetrain Motor Controllers
-  private CANSparkMax m_captureRoller;
-  private CANSparkMax m_belt;
+  private CANSparkMax m_captureRoller; // NEO 550 motor
+  private CANSparkMax m_belt; // NEO 550 motor
 
   // Speed Control Chooser
   SendableChooser<Double> beltSpeedChooser = new SendableChooser<Double>();
   SendableChooser<Double> captureWheelChooser = new SendableChooser<Double>();
 
-
   /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
-  public FeedSubsystem() {
+  public FeederSubsystem() {
     // Instantiate the Drivetrain motor controllers
     m_captureRoller = new CANSparkMax(Constants.CAPTURE_ROLLER_MOTOR_ID, MotorType.kBrushless);
     m_belt = new CANSparkMax(Constants.BELT_MOTOR_ID, MotorType.kBrushless);
