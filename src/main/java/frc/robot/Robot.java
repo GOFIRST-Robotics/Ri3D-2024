@@ -51,6 +51,8 @@ public class Robot extends TimedRobot {
   public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(); // Launcher subsystem
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
+
+  boolean launchStarted = false;
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -164,20 +166,13 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(2, true));
 
     // Climber Controls //
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_climbSubsystem.changeSetpoint(0)));
-    new POVButton(controller, 180).onTrue(new InstantCommand(() -> m_climbSubsystem.changeSetpoint(1)));
-    new POVButton(controller, 90).onTrue(new InstantCommand(() -> m_climbSubsystem.incrementSetPoint()));
-    new POVButton(controller, 0).onTrue(new InstantCommand(() -> m_climbSubsystem.changeSetpoint(4)));
-    new POVButton(controller, 270).onTrue(new InstantCommand(() -> m_climbSubsystem.decrementSetPoint()));
-    // Manual Climber Control //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.UP_ARROW_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.DOWN_ARROW_AXIS)).whileTrue(new StartEndCommand(() -> m_climbSubsystem.launch(), () -> m_climbSubsystem.stop()));
 
     // Launcher Controls //
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
 
     // Feeder Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_feedSubsystem.capture(), () -> m_feedSubsystem.stopCapture()));
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS)).whileTrue(new StartEndCommand(() -> m_feedSubsystem.feed(), () -> m_feedSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> {m_feedSubsystem.capture(); m_feedSubsystem.feed();}, () -> m_feedSubsystem.stop()));
   }
 }
