@@ -7,8 +7,10 @@ import frc.robot.Constants;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -64,7 +66,7 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders(); // Zero the encoders
 
     // These objects help with fancy path following
-    odometry = new DifferentialDriveOdometry(navx.getRotation2d(), getLeftDistance(), getRightDistance());
+    odometry = new DifferentialDriveOdometry(getRotation2D(), getLeftDistance(), getRightDistance());
     kinematics = new DifferentialDriveKinematics(Constants.TRACK_WIDTH);
 
     // Drive Scale Options //
@@ -104,6 +106,9 @@ public class DriveSubsystem extends SubsystemBase {
   }
   public double getAngle() {
     return navx.getAngle();
+  }
+  public Rotation2d getRotation2D() {
+    return navx.getRotation2d();
   }
 
   // Speed will be measured in meters/second
@@ -147,12 +152,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void updateOdometry() {
-    odometry.update(navx.getRotation2d(), getLeftDistance(), getRightDistance());
+    odometry.update(getRotation2D(), getLeftDistance(), getRightDistance());
   }
 
   // Returns the current wheel speeds of the robot.
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(getLeftSpeed(), getRightDistance());
+    return new DifferentialDriveWheelSpeeds(getLeftSpeed(), getRightSpeed());
+  }
+  // Returns the current wheel positions of the robot.
+  public DifferentialDriveWheelPositions getWheelPositions() {
+    return new DifferentialDriveWheelPositions(getLeftDistance(), getRightDistance());
   }
 
   // These methods allow us to flip which side is considered the "front" of the robot
