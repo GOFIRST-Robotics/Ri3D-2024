@@ -118,6 +118,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    // Set the LED pattern for autonomous
+    m_LEDSubsystem.setLEDMode(LEDMode.AUTO);
   }
 
   /** This function is called periodically during autonomous. */
@@ -137,7 +140,9 @@ public class Robot extends TimedRobot {
     // Zero the gyro and reset encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
-    m_LEDSubsystem.setLEDMode(LEDMode.GREEN); // Green is the best color for tracking retroreflective tape
+
+    // Set the LED pattern for teleop
+    m_LEDSubsystem.setLEDMode(LEDMode.TELEOP);
   }
 
   /** This function is called periodically during operator control. */
