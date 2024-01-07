@@ -1,5 +1,5 @@
 // Author: UMN Robotics Ri3d
-// Last Updated : January 2023
+// Last Updated : January 2024
 
 package frc.robot.subsystems;
 
@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LauncherSubsystem extends SubsystemBase {
   
-  // Drivetrain Motor Controllers
-  private CANSparkMax m_flyWheel;
+  // Launcher Motor Controllers
+  private CANSparkMax m_flyWheel; // NEO motor
 
   /** Subsystem for controlling the launcher fly wheel */
   public LauncherSubsystem() {
@@ -23,11 +23,11 @@ public class LauncherSubsystem extends SubsystemBase {
     // Reverse it if needed
     m_flyWheel.setInverted(Constants.FLY_WHEEL_INVERT);
 
-    // 
+    // Logging
     SmartDashboard.putNumber("Fly Wheel Speed", Constants.FLY_WHEEL_DEFAULT_SPEED);
   }
 
-  /* Set power to the drivetrain motor */
+  /* Set power to the launcher motor */
   public void launch() {
     m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_DEFAULT_SPEED));
   }
@@ -38,6 +38,6 @@ public class LauncherSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-  }
 
+  }
 }

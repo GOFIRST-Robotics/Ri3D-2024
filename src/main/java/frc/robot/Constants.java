@@ -47,7 +47,8 @@ public final class Constants {
     // Spark CAN IDs //
     public static final int CAPTURE_ROLLER_MOTOR_ID = 0; // TODO set
     public static final int BELT_MOTOR_ID = 0; // TODO set
-    public static final int FLY_WHEEL_MOTOR_ID = 0; // TODO sest
+    public static final int FLY_WHEEL_MOTOR_ID = 0; // TODO set
+    public static final int CLIMBER_MOTOR_ID = 0; // TODO set
 
     // Other PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -74,14 +75,17 @@ public final class Constants {
     public static final int LEFT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder
     public static final int RIGHT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder 
 
-    // Feed Constants //
+    // Feeder Constants //
     public static final boolean CAPTURE_ROLLER_INVERT = false; // TODO set
     public static final boolean BELT_INVERT = true; // TODO set
 
+    // Climber Constants //
+    public static final boolean CLIMBER_INVERT = false; // TODO set
+    public static final double CLIMBER_DEFAULT_SPEED = 0.7; // TODO: Adjust this
+
     // Launcher Constants //
     public static final boolean FLY_WHEEL_INVERT = false; // TODO set
-    public static final double FLY_WHEEL_DEFAULT_SPEED = .7; // TODO set
-
+    public static final double FLY_WHEEL_DEFAULT_SPEED = 0.7; // TODO: Adjust this
 
     // Apriltag Vision Constants //
     public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7);

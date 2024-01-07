@@ -7,11 +7,11 @@ import frc.robot.Robot;
 import frc.robot.subsystems.FeederSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class FeedCommand extends Command {
+public class ClimbCommand extends Command {
     private FeederSubsystem m_subsystem;
 
     /** Default feed command: runs the feed when a disc is intaked until it is ready to be shot. */
-    public FeedCommand() {
+    public ClimbCommand() {
         m_subsystem = Robot.m_feedSubsystem;
         addRequirements(m_subsystem);
     }
