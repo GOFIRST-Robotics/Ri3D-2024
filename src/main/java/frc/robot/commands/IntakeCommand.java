@@ -3,6 +3,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,7 +18,19 @@ public class IntakeCommand extends Command {
     }
 
     @Override
-    public void initialize() {
+    public void initialize() {}
 
+    @Override
+    public void execute() {
+        if (Robot.controller.getRawButton(Constants.LEFT_TRIGGER_AXIS)) {
+            m_subsystem.setCapturePower(Constants.CAPTURE_ROLLER_DEFAULT_SPEED);
+            m_subsystem.setBeltPower(Constants.BELT_DEFAULT_SPEED);
+        }
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        m_subsystem.stop(); // Stop the capture roller and belt motors
     }
 }
