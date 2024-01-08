@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_lowerIntakeBarEncoder = m_lowerIntakeBar.getEncoder();
     m_upperIntakeBarEncoder = m_upperIntakeBar.getEncoder();
 
-    //TODO: Set encoder conversion factor for correct RPM
+    // TODO: Set the gear ratio factor for correct RPM readings
 
     SmartDashboard.putNumber("Upper Intake Bar Speed", Constants.UPPER_INTAKE_BAR_DEFAULT_SPEED);
     SmartDashboard.putNumber("Lower Intake Bar Speed", Constants.LOWER_INTAKE_BAR_DEFAULT_SPEED);
