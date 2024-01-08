@@ -28,7 +28,7 @@ public class LauncherSubsystem extends SubsystemBase {
   private RelativeEncoder m_flyWheelEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
   private double power;
-  private double flyWheelRPM;
+  private double flyWheelRPM, flyWheelTargetRPM;
 
   private boolean isExtended; // This variable keeps track of whether the grabber piston is currently extended or not
   private DoubleSolenoid extensionSolenoid; // A double solenoid takes up two PCM channels
@@ -74,6 +74,9 @@ public class LauncherSubsystem extends SubsystemBase {
     kMinOutput = -1;
     maxRPM = 5700;
 
+    flyWheelRPM = 0;
+    flyWheelTargetRPM = 0;
+
     // set PID coefficients
     m_flyWheelPIDController.setP(kP);
     m_flyWheelPIDController.setI(kI);
@@ -92,7 +95,8 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel Min Output", kMinOutput);
 
     // Logging
-    SmartDashboard.putNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED);
+    SmartDashboard.putNumber("Fly Wheel RPM", flyWheelRPM);
+    SmartDashboard.putNumber("Fly Wheel Target RPM", flyWheelTargetRPM);
   }
 
   public void configureFeederWheel() {
@@ -136,6 +140,7 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public void setFlyWheelRPM(double RPM) {
+    flyWheelTargetRPM = RPM;
     m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity);
   }
 
@@ -145,6 +150,10 @@ public class LauncherSubsystem extends SubsystemBase {
 
   public double getFlyWheelRPM() {
     return flyWheelRPM;
+  }
+
+  public double getFlyWheelTargetRPM() {
+    return flyWheelTargetRPM;
   }
 
   public double getFlyWheelSpeed() {
@@ -181,10 +190,16 @@ public class LauncherSubsystem extends SubsystemBase {
       m_flyWheelPIDController.setOutputRange(min, max); 
       kMinOutput = min; kMaxOutput = max; 
     }
+
+    double inputTargetRPM = SmartDashboard.getNumber("Fly Wheel Target RPM", 0);
+
+    if (inputTargetRPM != flyWheelTargetRPM) {
+      setFlyWheelRPM(inputTargetRPM);
+    }
     
     flyWheelRPM = m_flyWheelEncoder.getVelocity();
 
     SmartDashboard.putNumber("Power", power);
-    SmartDashboard.putNumber("FlyWheel Velocity RPM", flyWheelRPM);
+    SmartDashboard.putNumber("Fly Wheel RPM", flyWheelRPM);
   }
 }

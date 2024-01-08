@@ -48,7 +48,7 @@ public final class Constants {
     // Spark MAX CAN IDs //
     public static final int LOWER_INTAKE_BAR_MOTOR_ID = 10; // TODO: Set this
     public static final int UPPER_INTAKE_BAR_MOTOR_ID = 11; // TODO: Set this
-    public static final int FLY_WHEEL_MOTOR_ID = 12; // TODO: Set this
+    public static final int FLY_WHEEL_MOTOR_ID = 5;
     public static final int CLIMBER_MOTOR_ID = 13; // TODO: Set this
 
     // Other PWM Ports //
