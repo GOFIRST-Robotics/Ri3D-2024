@@ -1,0 +1,48 @@
+{
+  "version": "3.0.1",
+  "layout": [
+    {
+      "type": 1,
+      "legends": {
+        "left": {
+          "lockedRange": null,
+          "unitConversion": {
+            "type": null,
+            "factor": 1
+          },
+          "fields": [
+            {
+              "key": "NT:/SmartDashboard/Drivetrain Speed/.instance",
+              "color": "#2b66a2",
+              "show": true
+            }
+          ]
+        },
+        "discrete": {
+          "fields": [
+            {
+              "key": "NT:/CameraPublisher/photonvision_Port_1183_Input_MJPEG_Server/connected",
+              "color": "#e5b31b",
+              "show": true
+            }
+          ]
+        },
+        "right": {
+          "lockedRange": null,
+          "unitConversion": {
+            "type": null,
+            "factor": 1
+          },
+          "fields": [
+            {
+              "key": "NT:/SmartDashboard/Gyroscope Pitch",
+              "color": "#af2437",
+              "show": true
+            }
+          ]
+        }
+      },
+      "title": "Line Graph"
+    }
+  ]
+}

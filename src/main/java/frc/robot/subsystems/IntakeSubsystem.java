@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +17,11 @@ public class IntakeSubsystem extends SubsystemBase {
   // Drivetrain Motor Controllers
   private CANSparkMax m_lowerIntakeBar; // NEO 550 motor
   private CANSparkMax m_upperIntakeBar; // NEO 550 motor
+
+  private RelativeEncoder m_lowerIntakeBarEncoder;  // NEO 550 encoder
+  private RelativeEncoder m_upperIntakeBarEncoder;  // NEO 550 encoder
+
+  private double lowerIntakeBarRPM, upperIntakeBarRPM;
 
   // Speed Control Chooser
   SendableChooser<Double> lowerIntakeBarSpeedChooser = new SendableChooser<Double>();
@@ -30,6 +36,11 @@ public class IntakeSubsystem extends SubsystemBase {
     // Reverse some of the motors if needed
     m_lowerIntakeBar.setInverted(Constants.LOWER_INTAKE_BAR_INVERT);
     m_upperIntakeBar.setInverted(Constants.UPPER_INTAKE_BAR_INVERT);
+
+    m_lowerIntakeBarEncoder = m_lowerIntakeBar.getEncoder();
+    m_upperIntakeBarEncoder = m_upperIntakeBar.getEncoder();
+
+    //TODO: Set encoder conversion factor for correct RPM
 
     // Belt Speed Options //
     upperIntakeBarSpeedChooser.addOption("100%", 1.0);
@@ -53,11 +64,26 @@ public class IntakeSubsystem extends SubsystemBase {
     m_upperIntakeBar.set(reverse * upperIntakeBarSpeedChooser.getSelected());
   }
 
+  public double getLowerIntakeBarRPM() {
+    return lowerIntakeBarRPM;
+  }
+
+  public double getUpperIntakeBarRPM() {
+    return upperIntakeBarRPM;
+  }
+
   public void stop() {
     m_lowerIntakeBar.set(0);
     m_upperIntakeBar.set(0);
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    lowerIntakeBarRPM = m_lowerIntakeBarEncoder.getVelocity();
+    upperIntakeBarRPM = m_upperIntakeBarEncoder.getVelocity();
+
+    // Add intake bar RPMs to SmartDashboard for the sake of datalogging
+    SmartDashboard.putNumber("Lower Intake Bar RPM", lowerIntakeBarRPM);
+    SmartDashboard.putNumber("Upper Intake Bar RPM", upperIntakeBarRPM);
+  }
 }
