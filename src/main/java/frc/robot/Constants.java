@@ -94,6 +94,18 @@ public final class Constants {
     public static final boolean FEEDER_WHEEL_INVERT = false;
     public static final double FEEDER_WHEEL_DEFAULT_SPEED = 0.8;
 
+    // Rev PDH Constants //
+    public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;
+    public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10;
+    public static final int LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 12;
+    public static final int RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 13;
+
+    public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
+    public static final int UPPER_INTAKE_MOTOR_PDH_CHANNEL = 15;
+    public static final int FLY_WHEEL_MOTOR_PDH_CHANNEL = 16;
+    public static final int CLIMBER_MOTOR_PDH_CHANNEL = 17;
+    public static final int FEEDER_WHEEL_MOTOR_PDH_CHANNEL = 18;
+
     // Apriltag Vision Constants //
     public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7);
     public static final double TARGET_HEIGHT_METERS = Units.inchesToMeters(18.5);

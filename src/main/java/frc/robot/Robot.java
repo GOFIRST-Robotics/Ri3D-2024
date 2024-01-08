@@ -29,6 +29,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.PowerSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDMode;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
   public static final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem(); // Climber subsystem
   public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(); // Launcher subsystem
+  public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
 
@@ -62,10 +64,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     // // Starts recording to data log
-    DataLogManager.start();
+    // DataLogManager.start();
 
     // // Record both DS control and joystick data
-    DriverStation.startDataLog(DataLogManager.getLog());
+    // DriverStation.startDataLog(DataLogManager.getLog());
 
     configureButtonBindings(); // Bind our commands to physical buttons on a controller
 
@@ -102,7 +104,13 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // Stops recording to data log
+    DataLogManager.stop();
+
+    // Record both DS control and joystick data
+    DriverStation.startDataLog(DataLogManager.getLog());
+  }
 
   /** This function is called continuously after the robot enters Disabled mode. */
   @Override
@@ -111,6 +119,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    // Starts recording to data log
+    DataLogManager.start();
+
     System.out.println("AUTONOMOUS MODE STARTED");
 
     m_autonomousCommand = autonChooser.getSelected();
@@ -134,6 +145,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // Starts recording to data log
+    DataLogManager.start();
+
+    // Record both DS control and joystick data
+    DriverStation.startDataLog(DataLogManager.getLog());
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
