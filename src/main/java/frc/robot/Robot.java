@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.autonomous.BalanceBeamAutonomous;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.SquareAutonomous;
@@ -32,7 +31,6 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LEDSubsystem.LEDMode;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.commands.BalanceOnBeamCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -73,7 +71,6 @@ public class Robot extends TimedRobot {
 
     // Add our Autonomous Routines to the chooser //
 		autonChooser.setDefaultOption("Default Auto", new AutonomousMode_Default());
-		autonChooser.addOption("Balance Beam Auto", new BalanceBeamAutonomous());
     autonChooser.addOption("Square Auto", new SquareAutonomous());
     autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
 		SmartDashboard.putData("Auto Mode", autonChooser);
@@ -175,7 +172,6 @@ public class Robot extends TimedRobot {
   private void configureButtonBindings() {
     // Drivetrain Controls //
     new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection()));
-    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new BalanceOnBeamCommand());
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(2, true));
 
     // Climber Controls //
