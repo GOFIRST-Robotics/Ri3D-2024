@@ -31,7 +31,7 @@ public class LaunchCommand extends Command {
         double currentSpeed = m_subsystem.getFlyWheelSpeed();
 
         if (currentSpeed == targetSpeed) {
-            m_subsystem.feederWheelPower(Constants.FEEDER_WHEEL_SPEED);
+            m_subsystem.setFeederWheelPower(Constants.FEEDER_WHEEL_SPEED);
         }
     }
 

@@ -27,7 +27,6 @@ public class LauncherSubsystem extends SubsystemBase {
   private SparkPIDController m_flyWheelPIDController;
   private RelativeEncoder m_flyWheelEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-  private double power;
   private double flyWheelRPM, flyWheelTargetRPM;
 
   private boolean isExtended; // This variable keeps track of whether the piston is currently extended or not
@@ -65,7 +64,7 @@ public class LauncherSubsystem extends SubsystemBase {
     m_flyWheelEncoder = m_flyWheel.getEncoder();
 
     // PID coefficients
-    kP = 6e-5;
+    kP = 0.5;
     kI = 0;
     kD = 0;
     kIz = 0;
@@ -116,11 +115,25 @@ public class LauncherSubsystem extends SubsystemBase {
     m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED));
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_SPEED);
   }
+
+  /* Solenoid Methods */
+  public void extend() {
+    extensionSolenoid.set(true);
+    isExtended = true;
+  }
+  public void retract() {
+    extensionSolenoid.set(false);
+    isExtended = false;
+  }
+  public void toggleExtension() {
+    if (isExtended) {
+      retract();
+    } else {
+      extend();
+    }
+  }
   
   public void flyWheelPower(double power) {
-    // m_flyWheel.set(power);
-    this.power = power;
-
     /**
      * PIDController objects are commanded to a set point using the 
      * SetReference() method.
@@ -143,8 +156,7 @@ public class LauncherSubsystem extends SubsystemBase {
     flyWheelTargetRPM = RPM;
     m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity);
   }
-
-  public void feederWheelPower(double power) {
+  public void setFeederWheelPower(double power) {
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, power);
   }
 
@@ -197,7 +209,6 @@ public class LauncherSubsystem extends SubsystemBase {
     
     flyWheelRPM = m_flyWheelEncoder.getVelocity();
 
-    SmartDashboard.putNumber("Power", power);
     SmartDashboard.putNumber("Fly Wheel RPM", flyWheelRPM);
   }
 }

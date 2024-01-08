@@ -194,6 +194,7 @@ public class Robot extends TimedRobot {
 
     // Launcher Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_launcherSubsystem.toggleExtension()));
 
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new StartEndCommand(() -> m_intakeSubsystem.setPower(1), () -> m_intakeSubsystem.stop()));
