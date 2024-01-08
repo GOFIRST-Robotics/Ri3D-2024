@@ -68,10 +68,6 @@ public final class Constants {
     public static final double TRACKED_TAG_DISTANCE_DRIVE_KP = 0.3; // P (Proportional) constant of a PID loop
     public static final double TRACKED_TAG_AREA_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
     public static final double APRILTAG_POWER_CAP = 0.75;
-    public static final double BEAM_BALANACED_DRIVE_KP = 0.015; // P (Proportional) constant of a PID loop
-    public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
-    public static final double BEAM_BALANCED_ANGLE_TRESHOLD_DEGREES = 1;
-    public static final double BACKWARDS_BALANCING_EXTRA_POWER_MULTIPLIER = 1.35;
     public static final double DRIVE_TURNING_THRESHOLD_DEGREES = 3;
     public static final int LEFT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder
     public static final int RIGHT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder 
@@ -84,13 +80,13 @@ public final class Constants {
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
-    public static final double CLIMBER_DEFAULT_SPEED = 0.2;
+    public static final double CLIMBER_DEFAULT_SPEED = 0.8;
 
     // Launcher Constants //
     public static final boolean FLY_WHEEL_INVERT = false;
     public static final double FLY_WHEEL_DEFAULT_SPEED = 0.8;
     public static final boolean FEEDER_WHEEL_INVERT = false;
-    public static final double FEEDER_WHEEL_DEFAULT_SPEED = 0.8;
+    public static final double FEEDER_WHEEL_DEFAULT_SPEED = 0.5;
 
     // Rev PDH Constants //
     public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;

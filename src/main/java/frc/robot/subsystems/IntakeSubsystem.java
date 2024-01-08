@@ -35,8 +35,6 @@ public class IntakeSubsystem extends SubsystemBase {
     m_lowerIntakeBarEncoder = m_lowerIntakeBar.getEncoder();
     m_upperIntakeBarEncoder = m_upperIntakeBar.getEncoder();
 
-    // TODO: Set the gear ratio factor for correct RPM readings
-
     SmartDashboard.putNumber("Upper Intake Bar Speed", Constants.UPPER_INTAKE_BAR_DEFAULT_SPEED);
     SmartDashboard.putNumber("Lower Intake Bar Speed", Constants.LOWER_INTAKE_BAR_DEFAULT_SPEED);
   }
@@ -46,18 +44,17 @@ public class IntakeSubsystem extends SubsystemBase {
     m_upperIntakeBar.set(reverse * Constants.UPPER_INTAKE_BAR_DEFAULT_SPEED);
     m_lowerIntakeBar.set(reverse * Constants.LOWER_INTAKE_BAR_DEFAULT_SPEED);
   }
-
-  public double getLowerIntakeBarRPM() {
-    return lowerIntakeBarRPM;
-  }
-
-  public double getUpperIntakeBarRPM() {
-    return upperIntakeBarRPM;
-  }
-
   public void stop() {
     m_lowerIntakeBar.set(0);
     m_upperIntakeBar.set(0);
+  }
+
+  /* Read the speed of the intake motors */
+  public double getLowerIntakeBarRPM() {
+    return lowerIntakeBarRPM;
+  }
+  public double getUpperIntakeBarRPM() {
+    return upperIntakeBarRPM;
   }
 
   @Override
@@ -65,7 +62,7 @@ public class IntakeSubsystem extends SubsystemBase {
     lowerIntakeBarRPM = m_lowerIntakeBarEncoder.getVelocity();
     upperIntakeBarRPM = m_upperIntakeBarEncoder.getVelocity();
 
-    // Add intake bar RPMs to SmartDashboard for the sake of datalogging
+    // Add intake bar RPM readingss to SmartDashboard for the sake of datalogging
     SmartDashboard.putNumber("Lower Intake Bar RPM", lowerIntakeBarRPM);
     SmartDashboard.putNumber("Upper Intake Bar RPM", upperIntakeBarRPM);
   }
