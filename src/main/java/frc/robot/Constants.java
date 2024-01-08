@@ -84,7 +84,7 @@ public final class Constants {
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
-    public static final double CLIMBER_DEFAULT_SPEED = 0.8;
+    public static final double CLIMBER_DEFAULT_SPEED = 0.2;
 
     // Launcher Constants //
     public static final boolean FLY_WHEEL_INVERT = false;
