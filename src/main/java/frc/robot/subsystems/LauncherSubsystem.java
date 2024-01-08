@@ -171,8 +171,14 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    m_flyWheel.set(0);
+    stopFlyWheel();
+    stopFeederWheel();
+  }
+  public void stopFeederWheel() {
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, 0);
+  }
+  public void stopFlyWheel() {
+    m_flyWheel.set(0);
   }
 
   @Override
