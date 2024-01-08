@@ -22,7 +22,7 @@ public class LaunchCommand extends Command {
 
     @Override
     public void execute() {
-        double targetSpeed = Constants.FLY_WHEEL_DEFAULT_SPEED;
+        double targetSpeed = Constants.FLY_WHEEL_SPEED;
 
         if (Robot.controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)) {
             m_subsystem.flyWheelPower(targetSpeed);
@@ -31,7 +31,7 @@ public class LaunchCommand extends Command {
         double currentSpeed = m_subsystem.getFlyWheelSpeed();
 
         if (currentSpeed == targetSpeed) {
-            m_subsystem.feederWheelPower(Constants.FEEDER_WHEEL_DEFAULT_SPEED);
+            m_subsystem.feederWheelPower(Constants.FEEDER_WHEEL_SPEED);
         }
     }
 

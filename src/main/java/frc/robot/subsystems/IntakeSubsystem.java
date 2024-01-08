@@ -35,14 +35,14 @@ public class IntakeSubsystem extends SubsystemBase {
     m_lowerIntakeBarEncoder = m_lowerIntakeBar.getEncoder();
     m_upperIntakeBarEncoder = m_upperIntakeBar.getEncoder();
 
-    SmartDashboard.putNumber("Upper Intake Bar Speed", Constants.UPPER_INTAKE_BAR_DEFAULT_SPEED);
-    SmartDashboard.putNumber("Lower Intake Bar Speed", Constants.LOWER_INTAKE_BAR_DEFAULT_SPEED);
+    SmartDashboard.putNumber("Upper Intake Bar Speed", Constants.UPPER_INTAKE_BAR_SPEED);
+    SmartDashboard.putNumber("Lower Intake Bar Speed", Constants.LOWER_INTAKE_BAR_SPEED);
   }
 
   /* Set power to the intake motors */
   public void setPower(int reverse) {
-    m_upperIntakeBar.set(reverse * Constants.UPPER_INTAKE_BAR_DEFAULT_SPEED);
-    m_lowerIntakeBar.set(reverse * Constants.LOWER_INTAKE_BAR_DEFAULT_SPEED);
+    m_upperIntakeBar.set(reverse * Constants.UPPER_INTAKE_BAR_SPEED);
+    m_lowerIntakeBar.set(reverse * Constants.LOWER_INTAKE_BAR_SPEED);
   }
   public void stop() {
     m_lowerIntakeBar.set(0);

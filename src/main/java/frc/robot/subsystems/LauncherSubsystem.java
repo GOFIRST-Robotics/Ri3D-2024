@@ -83,7 +83,7 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel Min Output", kMinOutput);
 
     // Logging
-    SmartDashboard.putNumber("Fly Wheel Speed", Constants.FLY_WHEEL_DEFAULT_SPEED);
+    SmartDashboard.putNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED);
   }
 
   public void configureFeederWheel() {
@@ -100,8 +100,8 @@ public class LauncherSubsystem extends SubsystemBase {
 
   /* Set power to the launcher motor */
   public void launch() {
-    m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_DEFAULT_SPEED));
-    m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_DEFAULT_SPEED);
+    m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED));
+    m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_SPEED);
   }
   
   public void flyWheelPower(double power) {

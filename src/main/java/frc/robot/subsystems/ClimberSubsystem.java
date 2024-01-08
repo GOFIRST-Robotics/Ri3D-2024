@@ -25,7 +25,7 @@ public class ClimberSubsystem extends SubsystemBase {
     m_climber.setInverted(Constants.CLIMBER_INVERT);
 
     // Put the default speed on SmartDashboard
-    SmartDashboard.putNumber("Climber Speed", Constants.CLIMBER_DEFAULT_SPEED);
+    SmartDashboard.putNumber("Climber Speed", Constants.CLIMBER_SPEED);
   }
 
   /* Set power to the climber motor */
