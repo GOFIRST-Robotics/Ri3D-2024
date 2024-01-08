@@ -8,13 +8,12 @@ import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
   
-  // Drivetrain Motor Controllers
+  // Intake Motor Controllers
   private CANSparkMax m_lowerIntakeBar; // NEO 550 motor
   private CANSparkMax m_upperIntakeBar; // NEO 550 motor
 
@@ -23,13 +22,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private double lowerIntakeBarRPM, upperIntakeBarRPM;
 
-  // Speed Control Chooser
-  SendableChooser<Double> lowerIntakeBarSpeedChooser = new SendableChooser<Double>();
-  SendableChooser<Double> upperIntakeBarSpeedChooser = new SendableChooser<Double>();
-
-  /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
+  /** Subsystem for controlling the Intake */
   public IntakeSubsystem() {
-    // Instantiate the Drivetrain motor controllers
+    // Instantiate the Intake motor controllers
     m_lowerIntakeBar = new CANSparkMax(Constants.LOWER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
     m_upperIntakeBar = new CANSparkMax(Constants.UPPER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
 
@@ -40,28 +35,16 @@ public class IntakeSubsystem extends SubsystemBase {
     m_lowerIntakeBarEncoder = m_lowerIntakeBar.getEncoder();
     m_upperIntakeBarEncoder = m_upperIntakeBar.getEncoder();
 
-    //TODO: Set encoder conversion factor for correct RPM
+    // TODO: Set the gear ratio factor for correct RPM readings
 
-    // Belt Speed Options //
-    upperIntakeBarSpeedChooser.addOption("100%", 1.0);
-    upperIntakeBarSpeedChooser.setDefaultOption("75%", 0.75);
-    upperIntakeBarSpeedChooser.addOption("50%", 0.5);
-    upperIntakeBarSpeedChooser.addOption("25%", 0.25);
-
-    // Belt Speed Options //
-    lowerIntakeBarSpeedChooser.addOption("100%", 1.0);
-    lowerIntakeBarSpeedChooser.setDefaultOption("75%", 0.75);
-    lowerIntakeBarSpeedChooser.addOption("50%", 0.5);
-    lowerIntakeBarSpeedChooser.addOption("25%", 0.25);
-
-    SmartDashboard.putData("Upper Intake Bar Speed", upperIntakeBarSpeedChooser);
-    SmartDashboard.putData("Lower Intake Bar Speed", lowerIntakeBarSpeedChooser);
+    SmartDashboard.putNumber("Upper Intake Bar Speed", Constants.UPPER_INTAKE_BAR_DEFAULT_SPEED);
+    SmartDashboard.putNumber("Lower Intake Bar Speed", Constants.LOWER_INTAKE_BAR_DEFAULT_SPEED);
   }
 
-  /* Set power to the drivetrain motor */
+  /* Set power to the intake motors */
   public void setPower(int reverse) {
-    m_lowerIntakeBar.set(reverse * lowerIntakeBarSpeedChooser.getSelected());
-    m_upperIntakeBar.set(reverse * upperIntakeBarSpeedChooser.getSelected());
+    m_upperIntakeBar.set(reverse * Constants.UPPER_INTAKE_BAR_DEFAULT_SPEED);
+    m_lowerIntakeBar.set(reverse * Constants.LOWER_INTAKE_BAR_DEFAULT_SPEED);
   }
 
   public double getLowerIntakeBarRPM() {
