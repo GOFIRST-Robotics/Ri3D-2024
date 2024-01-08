@@ -45,7 +45,7 @@ public final class Constants {
     public static final int LEFT_REAR_DRIVE_MOTOR_ID = 3;
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
 
-    // Spark CAN IDs //
+    // Spark MAX CAN IDs //
     public static final int LOWER_INTAKE_BAR_MOTOR_ID = 10; // TODO: Set this
     public static final int UPPER_INTAKE_BAR_MOTOR_ID = 11; // TODO: Set this
     public static final int FLY_WHEEL_MOTOR_ID = 12; // TODO: Set this
@@ -76,11 +76,11 @@ public final class Constants {
     public static final int LEFT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder
     public static final int RIGHT_ENCODER_COUNTS_PER_REV = 1440; // The number of encoder counts equal to one full revolution of the encoder 
 
-    // Feeder Constants //
+    // Intake Constants //
     public static final boolean LOWER_INTAKE_BAR_INVERT = false;
-    public static final double CAPTURE_ROLLER_DEFAULT_SPEED = 0.8;
+    public static final double LOWER_INTAKE_BAR_DEFAULT_SPEED = 0.8;
     public static final boolean UPPER_INTAKE_BAR_INVERT = true;
-    public static final double BELT_DEFAULT_SPEED = 0.8;
+    public static final double UPPER_INTAKE_BAR_DEFAULT_SPEED = 0.4;
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
