@@ -88,9 +88,8 @@ public final class Constants {
     public static final boolean FEEDER_WHEEL_INVERT = false;
     public static final double FEEDER_WHEEL_SPEED = 0.5;
 
-    // Pneumatics Constants //
-    public static final int EXTENSION_SOLENOID_ID_1 = 0;
-    public static final int EXTENSION_SOLENOID_ID_2 = 1;
+    // REV PH Channels //
+    public static final int EXTENSION_SOLENOID_ID = 1;
 
     // Rev PDH Constants //
     public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;

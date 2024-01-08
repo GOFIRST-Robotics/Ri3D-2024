@@ -13,8 +13,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -30,15 +30,15 @@ public class LauncherSubsystem extends SubsystemBase {
   private double power;
   private double flyWheelRPM, flyWheelTargetRPM;
 
-  private boolean isExtended; // This variable keeps track of whether the grabber piston is currently extended or not
-  private DoubleSolenoid extensionSolenoid; // A double solenoid takes up two PCM channels
+  private boolean isExtended; // This variable keeps track of whether the piston is currently extended or not
+  private Solenoid extensionSolenoid;
 
   /** Subsystem for controlling the launcher fly wheel */
   public LauncherSubsystem() {
     configureFlyWheel();
     configureFeederWheel();
 
-    extensionSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.EXTENSION_SOLENOID_ID_1, Constants.EXTENSION_SOLENOID_ID_2);
+    extensionSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.EXTENSION_SOLENOID_ID);
     isExtended = false;
   }
 
@@ -65,12 +65,12 @@ public class LauncherSubsystem extends SubsystemBase {
     m_flyWheelEncoder = m_flyWheel.getEncoder();
 
     // PID coefficients
-    kP = 6e-5; 
+    kP = 6e-5;
     kI = 0;
-    kD = 0; 
-    kIz = 0; 
-    kFF = 0.000015; 
-    kMaxOutput = 1; 
+    kD = 0;
+    kIz = 0;
+    kFF = 0.000015;
+    kMaxOutput = 1;
     kMinOutput = -1;
     maxRPM = 5700;
 
@@ -151,11 +151,9 @@ public class LauncherSubsystem extends SubsystemBase {
   public double getFlyWheelRPM() {
     return flyWheelRPM;
   }
-
   public double getFlyWheelTargetRPM() {
     return flyWheelTargetRPM;
   }
-
   public double getFlyWheelSpeed() {
     return m_flyWheel.getEncoder().getVelocity();
   }
