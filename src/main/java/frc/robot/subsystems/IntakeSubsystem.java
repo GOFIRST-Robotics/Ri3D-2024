@@ -18,62 +18,39 @@ public class IntakeSubsystem extends SubsystemBase {
   private CANSparkMax m_upperIntakeBar; // NEO 550 motor
 
   // Speed Control Chooser
-  SendableChooser<Double> beltSpeedChooser = new SendableChooser<Double>();
-  SendableChooser<Double> captureWheelChooser = new SendableChooser<Double>();
+  SendableChooser<Double> lowerIntakeBarSpeedChooser = new SendableChooser<Double>();
+  SendableChooser<Double> upperIntakeBarSpeedChooser = new SendableChooser<Double>();
 
   /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
   public IntakeSubsystem() {
     // Instantiate the Drivetrain motor controllers
-    m_lowerIntakeBar = new CANSparkMax(Constants.CAPTURE_ROLLER_MOTOR_ID, MotorType.kBrushless);
-    m_upperIntakeBar = new CANSparkMax(Constants.BELT_MOTOR_ID, MotorType.kBrushless);
+    m_lowerIntakeBar = new CANSparkMax(Constants.LOWER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
+    m_upperIntakeBar = new CANSparkMax(Constants.UPPER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
 
     // Reverse some of the motors if needed
-    m_lowerIntakeBar.setInverted(Constants.CAPTURE_ROLLER_INVERT);
-    m_upperIntakeBar.setInverted(Constants.BELT_INVERT);
+    m_lowerIntakeBar.setInverted(Constants.LOWER_INTAKE_BAR_INVERT);
+    m_upperIntakeBar.setInverted(Constants.UPPER_INTAKE_BAR_INVERT);
 
     // Belt Speed Options //
-    captureWheelChooser.addOption("100%", 1.0);
-    captureWheelChooser.setDefaultOption("75%", 0.75);
-    captureWheelChooser.addOption("50%", 0.5);
-    captureWheelChooser.addOption("25%", 0.25);
+    upperIntakeBarSpeedChooser.addOption("100%", 1.0);
+    upperIntakeBarSpeedChooser.setDefaultOption("75%", 0.75);
+    upperIntakeBarSpeedChooser.addOption("50%", 0.5);
+    upperIntakeBarSpeedChooser.addOption("25%", 0.25);
 
     // Belt Speed Options //
-    beltSpeedChooser.addOption("100%", 1.0);
-    beltSpeedChooser.setDefaultOption("75%", 0.75);
-    beltSpeedChooser.addOption("50%", 0.5);
-    beltSpeedChooser.addOption("25%", 0.25);
+    lowerIntakeBarSpeedChooser.addOption("100%", 1.0);
+    lowerIntakeBarSpeedChooser.setDefaultOption("75%", 0.75);
+    lowerIntakeBarSpeedChooser.addOption("50%", 0.5);
+    lowerIntakeBarSpeedChooser.addOption("25%", 0.25);
 
-    SmartDashboard.putData("Capture Wheel Speed", captureWheelChooser);
-    SmartDashboard.putData("Belt Speed", beltSpeedChooser);
+    SmartDashboard.putData("Upper Intake Bar Speed", upperIntakeBarSpeedChooser);
+    SmartDashboard.putData("Lower Intake Bar Speed", lowerIntakeBarSpeedChooser);
   }
 
   /* Set power to the drivetrain motor */
-  public void capture() {
-    m_lowerIntakeBar.set(captureWheelChooser.getSelected());
-  }
-
-  public void stopCapture() {
-    m_lowerIntakeBar.set(0);
-  }
-
-  public void feed() {
-    m_upperIntakeBar.set(beltSpeedChooser.getSelected());
-  }
-
-  public void reverseFeed() {
-    m_upperIntakeBar.set(beltSpeedChooser.getSelected());
-  }
-
-  public void stopFeed() {
-    m_upperIntakeBar.set(0);
-  }
-
-  public void setCapturePower(double power) {
-    m_lowerIntakeBar.set(power);
-  }
-
-  public void setBeltPower(double power) {
-    m_upperIntakeBar.set(power);
+  public void setPower(int reverse) {
+    m_lowerIntakeBar.set(reverse * lowerIntakeBarSpeedChooser.getSelected());
+    m_upperIntakeBar.set(reverse * upperIntakeBarSpeedChooser.getSelected());
   }
 
   public void stop() {
@@ -83,5 +60,4 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {}
-
 }
