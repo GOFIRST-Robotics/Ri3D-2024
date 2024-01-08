@@ -74,19 +74,19 @@ public final class Constants {
 
     // Intake Constants //
     public static final boolean LOWER_INTAKE_BAR_INVERT = false;
-    public static final double LOWER_INTAKE_BAR_DEFAULT_SPEED = 0.8;
+    public static final double LOWER_INTAKE_BAR_SPEED = 0.8;
     public static final boolean UPPER_INTAKE_BAR_INVERT = true;
-    public static final double UPPER_INTAKE_BAR_DEFAULT_SPEED = 0.4;
+    public static final double UPPER_INTAKE_BAR_SPEED = 0.4;
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
-    public static final double CLIMBER_DEFAULT_SPEED = 0.8;
+    public static final double CLIMBER_SPEED = 0.8;
 
     // Launcher Constants //
     public static final boolean FLY_WHEEL_INVERT = false;
-    public static final double FLY_WHEEL_DEFAULT_SPEED = 0.8;
+    public static final double FLY_WHEEL_SPEED = 0.8;
     public static final boolean FEEDER_WHEEL_INVERT = false;
-    public static final double FEEDER_WHEEL_DEFAULT_SPEED = 0.5;
+    public static final double FEEDER_WHEEL_SPEED = 0.5;
 
     // Rev PDH Constants //
     public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;
