@@ -23,8 +23,9 @@ public class LauncherSubsystem extends SubsystemBase {
 
   private SparkPIDController m_flyWheelPIDController;
   private RelativeEncoder m_flyWheelEncoder;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-  public double power;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+  private double power;
+  private double flyWheelRPM;
 
   /** Subsystem for controlling the launcher fly wheel */
   public LauncherSubsystem() {
@@ -102,10 +103,25 @@ public class LauncherSubsystem extends SubsystemBase {
     m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_DEFAULT_SPEED));
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_DEFAULT_SPEED);
   }
-
+  
   public void flyWheelPower(double power) {
     // m_flyWheel.set(power);
     this.power = power;
+
+    /**
+     * PIDController objects are commanded to a set point using the 
+     * SetReference() method.
+     * 
+     * The first parameter is the value of the set point, whose units vary
+     * depending on the control type set in the second parameter.
+     * 
+     * The second parameter is the control type can be set to one of four 
+     * parameters:
+     *  com.revrobotics.CANSparkMax.ControlType.kDutyCycle
+     *  com.revrobotics.CANSparkMax.ControlType.kPosition
+     *  com.revrobotics.CANSparkMax.ControlType.kVelocity
+     *  com.revrobotics.CANSparkMax.ControlType.kVoltage
+     */
     double setPoint = power*maxRPM;
     m_flyWheelPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
   }
@@ -116,6 +132,10 @@ public class LauncherSubsystem extends SubsystemBase {
 
   public void feederWheelPower(double power) {
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, power);
+  }
+
+  public double getFlyWheelRPM() {
+    return flyWheelRPM;
   }
 
   public double getFlyWheelSpeed() {
@@ -152,23 +172,10 @@ public class LauncherSubsystem extends SubsystemBase {
       m_flyWheelPIDController.setOutputRange(min, max); 
       kMinOutput = min; kMaxOutput = max; 
     }
-
-    /**
-     * PIDController objects are commanded to a set point using the 
-     * SetReference() method.
-     * 
-     * The first parameter is the value of the set point, whose units vary
-     * depending on the control type set in the second parameter.
-     * 
-     * The second parameter is the control type can be set to one of four 
-     * parameters:
-     *  com.revrobotics.CANSparkMax.ControlType.kDutyCycle
-     *  com.revrobotics.CANSparkMax.ControlType.kPosition
-     *  com.revrobotics.CANSparkMax.ControlType.kVelocity
-     *  com.revrobotics.CANSparkMax.ControlType.kVoltage
-     */
     
+    flyWheelRPM = m_flyWheelEncoder.getVelocity();
+
     SmartDashboard.putNumber("Power", power);
-    SmartDashboard.putNumber("FlyWheel Velocity RPM", m_flyWheelEncoder.getVelocity());
+    SmartDashboard.putNumber("FlyWheel Velocity RPM", flyWheelRPM);
   }
 }
