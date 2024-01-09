@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -27,8 +28,10 @@ public class LauncherSubsystem extends SubsystemBase {
   private SparkPIDController m_flyWheelPIDController;
   private RelativeEncoder m_flyWheelEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-  private double power;
+  private double power, flyWheelPower;
   private double flyWheelRPM, flyWheelTargetRPM;
+  private boolean setFlyWheelRPMSuccess; 
+  private int numTimesSetFlyWheelRPM = 0;
 
   private boolean isExtended; // This variable keeps track of whether the piston is currently extended or not
   private Solenoid extensionSolenoid;
@@ -54,15 +57,15 @@ public class LauncherSubsystem extends SubsystemBase {
 
     m_flyWheel.setInverted(Constants.FLY_WHEEL_INVERT);
 
+    // Encoder object created to display position values
+    m_flyWheelEncoder = m_flyWheel.getEncoder();
+
     /**
      * In order to use PID functionality for a controller, a SparkMaxPIDController object
      * is constructed by calling the getPIDController() method on an existing
      * CANSparkMax object
      */
     m_flyWheelPIDController = m_flyWheel.getPIDController();
-
-    // Encoder object created to display position values
-    m_flyWheelEncoder = m_flyWheel.getEncoder();
 
     // PID coefficients
     kP = 6e-5;
@@ -79,11 +82,11 @@ public class LauncherSubsystem extends SubsystemBase {
 
     // set PID coefficients
     m_flyWheelPIDController.setP(kP);
-    m_flyWheelPIDController.setI(kI);
-    m_flyWheelPIDController.setD(kD);
-    m_flyWheelPIDController.setIZone(kIz);
-    m_flyWheelPIDController.setFF(kFF);
-    m_flyWheelPIDController.setOutputRange(kMinOutput, kMaxOutput);
+    // m_flyWheelPIDController.setI(kI);
+    // m_flyWheelPIDController.setD(kD);
+    // m_flyWheelPIDController.setIZone(kIz);
+    // m_flyWheelPIDController.setFF(kFF);
+    // m_flyWheelPIDController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("Flywheel P Gain", kP);
@@ -97,6 +100,8 @@ public class LauncherSubsystem extends SubsystemBase {
     // Logging
     SmartDashboard.putNumber("Fly Wheel RPM", flyWheelRPM);
     SmartDashboard.putNumber("Fly Wheel Target RPM", flyWheelTargetRPM);
+
+    SmartDashboard.putNumber("Power", power);
   }
 
   public void configureFeederWheel() {
@@ -117,7 +122,7 @@ public class LauncherSubsystem extends SubsystemBase {
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_SPEED);
   }
   
-  public void flyWheelPower(double power) {
+  public void setFlyWheelPower(double power) {
     // m_flyWheel.set(power);
     this.power = power;
 
@@ -135,13 +140,25 @@ public class LauncherSubsystem extends SubsystemBase {
      *  com.revrobotics.CANSparkMax.ControlType.kVelocity
      *  com.revrobotics.CANSparkMax.ControlType.kVoltage
      */
-    double setPoint = power*maxRPM;
-    m_flyWheelPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+    m_flyWheel.set(power);
+    // double setPoint = power*maxRPM;
+    // m_flyWheelPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
   }
 
   public void setFlyWheelRPM(double RPM) {
     flyWheelTargetRPM = RPM;
-    m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity);
+    if(m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity).equals(REVLibError.kOk)) {
+      setFlyWheelRPMSuccess = true;
+    }
+    setFlyWheelRPMSuccess = false;
+
+    numTimesSetFlyWheelRPM++;
+
+    SmartDashboard.putNumber("PID Output Max", m_flyWheelPIDController.getOutputMax());
+    SmartDashboard.putNumber("PID Output Min", m_flyWheelPIDController.getOutputMin());
+
+    SmartDashboard.putNumber("Num Times Set FlyWheel RPM", numTimesSetFlyWheelRPM);
+    SmartDashboard.putBoolean("Set Fly Wheel RPM Success", setFlyWheelRPMSuccess);
   }
 
   public void feederWheelPower(double power) {
@@ -180,24 +197,27 @@ public class LauncherSubsystem extends SubsystemBase {
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
     if((p != kP)) { m_flyWheelPIDController.setP(p); kP = p; }
-    if((i != kI)) { m_flyWheelPIDController.setI(i); kI = i; }
-    if((d != kD)) { m_flyWheelPIDController.setD(d); kD = d; }
-    if((iz != kIz)) { m_flyWheelPIDController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { m_flyWheelPIDController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      m_flyWheelPIDController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
-    }
+    // if((i != kI)) { m_flyWheelPIDController.setI(i); kI = i; }
+    // if((d != kD)) { m_flyWheelPIDController.setD(d); kD = d; }
+    // if((iz != kIz)) { m_flyWheelPIDController.setIZone(iz); kIz = iz; }
+    // if((ff != kFF)) { m_flyWheelPIDController.setFF(ff); kFF = ff; }
+    // if((max != kMaxOutput) || (min != kMinOutput)) { 
+    //   m_flyWheelPIDController.setOutputRange(min, max); 
+    //   kMinOutput = min; kMaxOutput = max; 
+    // }
 
     double inputTargetRPM = SmartDashboard.getNumber("Fly Wheel Target RPM", 0);
 
     if (inputTargetRPM != flyWheelTargetRPM) {
       setFlyWheelRPM(inputTargetRPM);
     }
+
+    SmartDashboard.putNumber("Fly Wheel Target RPM Check", flyWheelTargetRPM);
     
     flyWheelRPM = m_flyWheelEncoder.getVelocity();
 
-    SmartDashboard.putNumber("Power", power);
     SmartDashboard.putNumber("Fly Wheel RPM", flyWheelRPM);
+    power = SmartDashboard.getNumber("Power", power);
+    // setFlyWheelPower(power);
   }
 }
