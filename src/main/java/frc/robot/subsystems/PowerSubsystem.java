@@ -12,12 +12,14 @@ public class PowerSubsystem extends SubsystemBase {
 
     private double voltage, temperatureCelsius, totalCurrent, totalPower, totalEnergy, numChannels;
     private double currentsArray[]; 
+    private boolean switchedChannelState;
 
   /** Subsystem for controlling the power of the robot */
   public PowerSubsystem() {
     m_revPDH = new PowerDistribution(1, ModuleType.kRev);
 
     currentsArray = new double[20];
+    switchedChannelState = true;
   }
 
   public void setPower(double power) {} // Set the power of the robot
@@ -57,5 +59,22 @@ public class PowerSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Lower Intake Motor Current", currentsArray[Constants.LOWER_INTAKE_MOTOR_PDH_CHANNEL]);
         SmartDashboard.putNumber("Feeder Motor Current", currentsArray[Constants.FEEDER_WHEEL_MOTOR_PDH_CHANNEL]);
         SmartDashboard.putNumber("Climber Drive Motor Current", currentsArray[Constants.CLIMBER_MOTOR_PDH_CHANNEL]);
+
+        SmartDashboard.putBoolean("Switched Channel State", switchedChannelState);
+        SmartDashboard.putBoolean("Reported Switched Channel State", getSwitchedChannelState());
+    }
+
+    public void setSwitchedChannel(boolean state) {
+        switchedChannelState = state;
+        m_revPDH.setSwitchableChannel(state);
+    }
+
+    public void toggleSwitchedChannel() {
+        m_revPDH.setSwitchableChannel(!switchedChannelState);
+        switchedChannelState = !switchedChannelState;
+    }
+
+    public boolean getSwitchedChannelState() {
+        return m_revPDH.getSwitchableChannel();
     }
 }

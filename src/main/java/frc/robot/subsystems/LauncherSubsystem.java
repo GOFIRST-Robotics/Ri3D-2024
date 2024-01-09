@@ -22,6 +22,7 @@ public class LauncherSubsystem extends SubsystemBase {
   // Launcher Motor Controllers
   private CANSparkMax m_flyWheel; // NEO motor
 
+  private PowerSubsystem m_powerSubsystem;
   private SparkMaxPIDController m_flyWheelPIDController;
   private RelativeEncoder m_flyWheelEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
@@ -35,12 +36,15 @@ public class LauncherSubsystem extends SubsystemBase {
   private Solenoid extensionSolenoid;
 
   /** Subsystem for controlling the launcher fly wheel */
-  public LauncherSubsystem() {
+  public LauncherSubsystem(PowerSubsystem powerSubsystem) {
     configureFlyWheel();
+    m_powerSubsystem = powerSubsystem;
 
     extensionSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.EXTENSION_SOLENOID_ID);
     isExtended = false;
     manualRPMSet = 1;
+
+    SmartDashboard.putBoolean("Launcher Extended", isExtended);
   }
 
   public void configureFlyWheel() {
@@ -111,12 +115,16 @@ public class LauncherSubsystem extends SubsystemBase {
 
   /* Solenoid Methods */
   public void extend() {
-    extensionSolenoid.set(true);
+    m_powerSubsystem.setSwitchedChannel(false);
+    // extensionSolenoid.set(true);
     isExtended = true;
+    SmartDashboard.putBoolean("Launcher Extended", isExtended);
   }
   public void retract() {
-    extensionSolenoid.set(false);
+    m_powerSubsystem.setSwitchedChannel(true);
+    // extensionSolenoid.set(false);
     isExtended = false;
+    SmartDashboard.putBoolean("Launcher Extended", isExtended);
   }
   public void toggleExtension() {
     if (isExtended) {
@@ -182,6 +190,17 @@ public class LauncherSubsystem extends SubsystemBase {
   }
   
   public void flyWheelPIDSmartDashboard() {
+    // if(((int)SmartDashboard.getNumber("Launcher Extended", 1) == 1 ? true : false) != isExtended) {
+    //   if (isExtended) {
+    //     retract();
+    //   } else {
+    //     extend();
+    //   }
+    // }
+
+    // int testing = (int)SmartDashboard.getNumber("Launcher Extended", 1);
+    // double testingDouble = SmartDashboard.getNumber("Launcher Extended", 1);
+
     if(manualRPMSet == 1) {
       // read PID coefficients from SmartDashboard
       double p = SmartDashboard.getNumber("P Gain", 0);

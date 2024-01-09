@@ -49,8 +49,8 @@ public class Robot extends TimedRobot {
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
   public static final FeederSubsystem m_feederSubsystem = new FeederSubsystem(); // Feeder subsystem
   public static final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem(); // Climber subsystem
-  public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(); // Launcher subsystem
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
+  public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(m_powerSubsystem); // Launcher subsystem
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
 
@@ -202,7 +202,7 @@ public class Robot extends TimedRobot {
    */
   private void configureButtonBindings() {
     // Drivetrain Controls //
-    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection())); // Toggle the direction of the drivetrain
+    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.extend(), () -> m_launcherSubsystem.retract()));//m_driveSubsystem.toggleDirection())); // Toggle the direction of the drivetrain
 
     // Climber Controls //
     new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
