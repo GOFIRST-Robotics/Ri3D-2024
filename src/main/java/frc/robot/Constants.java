@@ -25,14 +25,14 @@ public final class Constants {
     public static final int RIGHT_HORIZONTAL_JOYSTICK_AXIS = 4;
     public static final int LEFT_VERTICAL_JOYSTICK_AXIS = 1;
     public static final int LEFT_HORIZONTAL_JOYSTICK_AXIS = 0;
-    public static final int X_BUTTON = 1;
-    public static final int A_BUTTON = 2;
-    public static final int B_BUTTON = 3;
-    public static final int Y_BUTTON = 4;
-    public static final int LEFT_BUMPER = 5;
-    public static final int RIGHT_BUMPER = 6;
-    public static final int LEFT_TRIGGER_AXIS = 7;
-    public static final int RIGHT_TRIGGER_AXIS = 8;
+    public static final int X_BUTTON = 2;
+    public static final int A_BUTTON = 0;
+    public static final int B_BUTTON = 1;
+    public static final int Y_BUTTON = 3;
+    public static final int LEFT_BUMPER = 4;
+    public static final int RIGHT_BUMPER = 5;
+    public static final int LEFT_TRIGGER_AXIS = 2;
+    public static final int RIGHT_TRIGGER_AXIS = 3;
     public static final int PREV_BUTTON = 9;
     public static final int START_BUTTON = 10;
 
@@ -86,9 +86,18 @@ public final class Constants {
 
     // Launcher Constants //
     public static final boolean FLY_WHEEL_INVERT = false;
-    public static final double FLY_WHEEL_SPEED = 0.8;
+    public static final double FLY_WHEEL_SPEED = -1000;
     public static final boolean FEEDER_WHEEL_INVERT = false;
     public static final double FEEDER_WHEEL_SPEED = 0.5;
+
+    public static final double FLY_WHEEL_P = 0.0001;
+    public static final double FLY_WHEEL_I = 0.000001;
+    public static final double FLY_WHEEL_D = 0.01;
+    public static final double FLY_WHEEL_IZONE = 0;
+    public static final double FLY_WHEEL_FF = 0.000173;
+    public static final double FLY_WHEEL_K_MAX_OUTPUT = 1;
+    public static final double FLY_WHEEL_K_MIN_OUTPUT = -1;
+    public static final double FLY_WHEEL_MAX_RPM = 5700;
 
     // REV PH Channels //
     public static final int EXTENSION_SOLENOID_ID = 1;
