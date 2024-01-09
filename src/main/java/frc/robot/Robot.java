@@ -20,6 +20,7 @@ import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.FeedCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -196,8 +197,8 @@ public class Robot extends TimedRobot {
 
     // Launcher Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop())); // Launch
-    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new StartEndCommand(() -> m_feederSubsystem.setPower(Constants.FEEDER_WHEEL_SPEED), () -> m_feederSubsystem.stop())); // Feed
-    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new StartEndCommand(() -> m_feederSubsystem.setPower(-1 * Constants.FEEDER_WHEEL_SPEED), () -> m_feederSubsystem.stop())); // Unfeed
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new FeedCommand(false)); // Feed
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new FeedCommand(true)); // Unfeed
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_launcherSubsystem.toggleExtension())); // Toggle the launcher extension
 
     // Intake Controls //
