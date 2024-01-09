@@ -20,8 +20,10 @@ import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -44,6 +46,7 @@ public class Robot extends TimedRobot {
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
+  public static final FeederSubsystem m_feederSubsystem = new FeederSubsystem(); // Feeder subsystem
   public static final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem(); // Climber subsystem
   public static final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem(); // Launcher subsystem
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
@@ -185,20 +188,20 @@ public class Robot extends TimedRobot {
    */
   private void configureButtonBindings() {
     // Drivetrain Controls //
-    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection()));
+    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection())); // Toggle the direction of the drivetrain
 
     // Climber Controls //
-    new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop()));
-    new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop()));
+    new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
+    new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
 
     // Launcher Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
-    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.setFeederWheelPower(Constants.FEEDER_WHEEL_SPEED), () -> m_launcherSubsystem.stopFeederWheel()));
-    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.setFeederWheelPower(-1 * Constants.FEEDER_WHEEL_SPEED), () -> m_launcherSubsystem.stopFeederWheel()));
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_launcherSubsystem.toggleExtension()));
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop())); // Launch
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new StartEndCommand(() -> m_feederSubsystem.setPower(Constants.FEEDER_WHEEL_SPEED), () -> m_feederSubsystem.stop())); // Feed
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new StartEndCommand(() -> m_feederSubsystem.setPower(-1 * Constants.FEEDER_WHEEL_SPEED), () -> m_feederSubsystem.stop())); // Unfeed
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_launcherSubsystem.toggleExtension())); // Toggle the launcher extension
 
     // Intake Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new StartEndCommand(() -> m_intakeSubsystem.setPower(1), () -> m_intakeSubsystem.stop()));
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new StartEndCommand(() -> m_intakeSubsystem.setPower(-1), () -> m_intakeSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
   }
 }

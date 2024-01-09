@@ -5,16 +5,19 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class LaunchCommand extends Command {
-    private LauncherSubsystem m_subsystem;
+    private LauncherSubsystem m_launcher_subsystem;
+    private FeederSubsystem m_feeder_subsystem;
 
     /** Default feed command: runs the feed when a disc is intaked until it is ready to be shot. */
     public LaunchCommand() {
-        m_subsystem = Robot.m_launcherSubsystem;
-        addRequirements(m_subsystem);
+        m_launcher_subsystem = Robot.m_launcherSubsystem;
+        m_feeder_subsystem = Robot.m_feederSubsystem;
+        addRequirements(m_launcher_subsystem, m_feeder_subsystem);
     }
 
     @Override
@@ -25,19 +28,20 @@ public class LaunchCommand extends Command {
         double targetSpeed = Constants.FLY_WHEEL_SPEED;
 
         if (Robot.controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)) {
-            m_subsystem.flyWheelPower(targetSpeed);
+            m_launcher_subsystem.flyWheelPower(targetSpeed);
         }
 
-        double currentSpeed = m_subsystem.getFlyWheelSpeed();
+        double currentSpeed = m_launcher_subsystem.getFlyWheelSpeed();
 
         if (currentSpeed == targetSpeed) {
-            m_subsystem.setFeederWheelPower(Constants.FEEDER_WHEEL_SPEED);
+            m_feeder_subsystem.setPower(Constants.FEEDER_WHEEL_SPEED);
         }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_subsystem.stop(); // Stop the flywheel and feeder wheel motors
+        m_launcher_subsystem.stop(); // Stop the launcher
+        m_feeder_subsystem.stop(); // Stop the feeder
     }
 }

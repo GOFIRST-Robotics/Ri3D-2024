@@ -41,9 +41,9 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /* Set power to the intake motors */
-  public void setPower(int reverse) {
-    m_upperIntakeBar.set(reverse * Constants.UPPER_INTAKE_BAR_SPEED);
-    m_lowerIntakeBar.set(reverse * Constants.LOWER_INTAKE_BAR_SPEED);
+  public void setPower(double upperPower, double lowerPower) {
+    m_upperIntakeBar.set(upperPower);
+    m_lowerIntakeBar.set(lowerPower);
   }
   public void stop() {
     m_lowerIntakeBar.set(0);

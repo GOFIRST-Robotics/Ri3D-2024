@@ -5,9 +5,6 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -22,7 +19,6 @@ public class LauncherSubsystem extends SubsystemBase {
   
   // Launcher Motor Controllers
   private CANSparkMax m_flyWheel; // NEO motor
-  private TalonSRX m_feederWheel; // BAG DC motor
 
   private SparkPIDController m_flyWheelPIDController;
   private RelativeEncoder m_flyWheelEncoder;
@@ -35,7 +31,6 @@ public class LauncherSubsystem extends SubsystemBase {
   /** Subsystem for controlling the launcher fly wheel */
   public LauncherSubsystem() {
     configureFlyWheel();
-    configureFeederWheel();
 
     extensionSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.EXTENSION_SOLENOID_ID);
     isExtended = false;
@@ -98,22 +93,9 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Fly Wheel Target RPM", flyWheelTargetRPM);
   }
 
-  public void configureFeederWheel() {
-    // Instantiate the launcher motor controllers
-    m_feederWheel = new TalonSRX(Constants.FEEDER_WHEEL_MOTOR_ID);
-
-    // Reverse it if needed
-    m_feederWheel.setInverted(Constants.FEEDER_WHEEL_INVERT);
-
-    // configure Talon SRX motor controllers
-    m_feederWheel.configFactoryDefault();
-    m_feederWheel.setNeutralMode(NeutralMode.Brake);
-  }
-
   /* Set power to the launcher motor */
   public void launch() {
     m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED));
-    m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_SPEED);
   }
 
   /* Solenoid Methods */
@@ -156,9 +138,6 @@ public class LauncherSubsystem extends SubsystemBase {
     flyWheelTargetRPM = RPM;
     m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity);
   }
-  public void setFeederWheelPower(double power) {
-    m_feederWheel.set(TalonSRXControlMode.PercentOutput, power);
-  }
 
   public double getFlyWheelRPM() {
     return flyWheelRPM;
@@ -171,13 +150,6 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    stopFlyWheel();
-    stopFeederWheel();
-  }
-  public void stopFeederWheel() {
-    m_feederWheel.set(TalonSRXControlMode.PercentOutput, 0);
-  }
-  public void stopFlyWheel() {
     m_flyWheel.set(0);
   }
 
