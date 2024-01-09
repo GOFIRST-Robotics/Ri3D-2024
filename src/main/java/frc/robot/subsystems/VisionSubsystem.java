@@ -7,6 +7,7 @@ import frc.robot.Constants;
 
 import java.util.List;
 
+import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -47,4 +48,37 @@ public class VisionSubsystem extends SubsystemBase {
     public boolean getHasTarget() {
         return hasTarget; // Returns whether or not a target was found
     }
+
+    public double getDistanceToTarget(PhotonTrackedTarget target) {
+        if (!hasTarget) {
+            return 0;
+        }
+        double april_tag_pitch = target.getPitch();
+        double april_tag_height = target.getArea();
+
+        double distance = april_tag_height
+
+        // Print the area and pitch of the target
+        System.out.println("Area: " + april_tag_height + "Pitch: " + april_tag_pitch);
+        return distance;
+    }
+
+    public boolean InRange(double distanceThreshold, double angleThreshold) {
+        if (!hasTarget) {
+            return false;
+        }
+    
+        PhotonTrackedTarget bestTarget = getBestTarget();
+        double distanceToTarget  = getDistanceToTarget(bestTarget);
+        double angleToTarget = bestTarget.getYaw(); // Assuming yaw gives the angle
+
+        System.out.println("Distance: " + distanceToTarget + "Angle: " + angleToTarget);
+    
+        return Math.abs(distanceToTarget) <= distanceThreshold && Math.abs(angleToTarget) <= angleThreshold;
+    }
+    
+
+    
 }
+
+// I need to modify 'periodic()' to call a new function 'InRange()' that returns a boolean value if the target is within a distance and angle range 
