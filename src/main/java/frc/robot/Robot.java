@@ -20,7 +20,6 @@ import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -78,6 +77,7 @@ public class Robot extends TimedRobot {
 
     // Zero the gyro and reset encoders
     m_driveSubsystem.zeroGyro();
+    m_driveSubsystem.resetEncoders();
   }
 
   /**
@@ -186,7 +186,6 @@ public class Robot extends TimedRobot {
   private void configureButtonBindings() {
     // Drivetrain Controls //
     new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection()));
-    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(2, true));
 
     // Climber Controls //
     new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop()));
@@ -194,6 +193,9 @@ public class Robot extends TimedRobot {
 
     // Launcher Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop()));
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.setFeederWheelPower(Constants.FEEDER_WHEEL_SPEED), () -> m_launcherSubsystem.stopFeederWheel()));
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.setFeederWheelPower(-1 * Constants.FEEDER_WHEEL_SPEED), () -> m_launcherSubsystem.stopFeederWheel()));
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_launcherSubsystem.toggleExtension()));
 
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new StartEndCommand(() -> m_intakeSubsystem.setPower(1), () -> m_intakeSubsystem.stop()));

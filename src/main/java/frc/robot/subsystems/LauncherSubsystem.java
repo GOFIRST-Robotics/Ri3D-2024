@@ -68,7 +68,7 @@ public class LauncherSubsystem extends SubsystemBase {
     m_flyWheelPIDController = m_flyWheel.getPIDController();
 
     // PID coefficients
-    kP = 6e-5;
+    kP = 0.5;
     kI = 0;
     kD = 0;
     kIz = 0;
@@ -121,6 +121,23 @@ public class LauncherSubsystem extends SubsystemBase {
     m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED));
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_SPEED);
   }
+
+  /* Solenoid Methods */
+  public void extend() {
+    extensionSolenoid.set(true);
+    isExtended = true;
+  }
+  public void retract() {
+    extensionSolenoid.set(false);
+    isExtended = false;
+  }
+  public void toggleExtension() {
+    if (isExtended) {
+      retract();
+    } else {
+      extend();
+    }
+  }
   
   public void setFlyWheelPower(double power) {
     // m_flyWheel.set(power);
@@ -160,8 +177,7 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Num Times Set FlyWheel RPM", numTimesSetFlyWheelRPM);
     SmartDashboard.putBoolean("Set Fly Wheel RPM Success", setFlyWheelRPMSuccess);
   }
-
-  public void feederWheelPower(double power) {
+  public void setFeederWheelPower(double power) {
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, power);
   }
 
@@ -176,8 +192,14 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    m_flyWheel.set(0);
+    stopFlyWheel();
+    stopFeederWheel();
+  }
+  public void stopFeederWheel() {
     m_feederWheel.set(TalonSRXControlMode.PercentOutput, 0);
+  }
+  public void stopFlyWheel() {
+    m_flyWheel.set(0);
   }
 
   @Override
