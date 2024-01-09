@@ -26,7 +26,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (hasTarget) {
             this.result = result;
         }
-        boolean in_range = InRange(0, 5, 0, 5);
+        InRange(0, 5, 0, 5); // Put to SmartDashboard whether or not the target is in range
     }
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it exists)
         List<PhotonTrackedTarget> targets = result.getTargets(); // Create a list of all currently tracked targets
