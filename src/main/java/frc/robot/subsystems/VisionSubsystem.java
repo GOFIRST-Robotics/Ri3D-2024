@@ -12,6 +12,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -26,6 +27,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (hasTarget) {
             this.result = result;
         }
+        boolean in_range = InRange(0, 0);
     }
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it exists)
         List<PhotonTrackedTarget> targets = result.getTargets(); // Create a list of all currently tracked targets
@@ -54,12 +56,14 @@ public class VisionSubsystem extends SubsystemBase {
             return 0;
         }
         double april_tag_pitch = target.getPitch();
-        double april_tag_height = target.getArea();
+        double april_tag_area = target.getArea();
 
-        double distance = april_tag_height
+        double distance = april_tag_area;
 
         // Print the area and pitch of the target
-        System.out.println("Area: " + april_tag_height + "Pitch: " + april_tag_pitch);
+        //System.out.println("Area: " + april_tag_height + "Pitch: " + april_tag_pitch);
+        SmartDashboard.putNumber("t_area", april_tag_area);
+        SmartDashboard.putNumber("t_pitch", april_tag_pitch);
         return distance;
     }
 
@@ -71,10 +75,20 @@ public class VisionSubsystem extends SubsystemBase {
         PhotonTrackedTarget bestTarget = getBestTarget();
         double distanceToTarget  = getDistanceToTarget(bestTarget);
         double angleToTarget = bestTarget.getYaw(); // Assuming yaw gives the angle
+        double skewTarget = bestTarget.getSkew();
 
-        System.out.println("Distance: " + distanceToTarget + "Angle: " + angleToTarget);
+        boolean inRange = Math.abs(distanceToTarget) <= distanceThreshold && Math.abs(angleToTarget) <= angleThreshold;
+
+        SmartDashboard.putNumber("t_distance", distanceToTarget);
+        
+        SmartDashboard.putNumber("t_angle", angleToTarget);
+
+        SmartDashboard.putNumber("t_skew", skewTarget);
+
+        SmartDashboard.putBoolean("InRange", inRange);
+
     
-        return Math.abs(distanceToTarget) <= distanceThreshold && Math.abs(angleToTarget) <= angleThreshold;
+        return inRange;
     }
     
 
