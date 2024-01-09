@@ -7,7 +7,6 @@ import frc.robot.Constants;
 
 import java.util.List;
 
-import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -27,7 +26,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (hasTarget) {
             this.result = result;
         }
-        boolean in_range = InRange(0, 0);
+        boolean in_range = InRange(0, 5, 0, 5);
     }
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it exists)
         List<PhotonTrackedTarget> targets = result.getTargets(); // Create a list of all currently tracked targets
@@ -87,13 +86,9 @@ public class VisionSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("t_skew", skewTarget);
 
         SmartDashboard.putBoolean("InRange", inRange);
-
     
         return inRange;
     }
-    
-
-    
 }
 
 // I need to modify 'periodic()' to call a new function 'InRange()' that returns a boolean value if the target is within a distance and angle range 
