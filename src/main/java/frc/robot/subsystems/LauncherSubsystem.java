@@ -31,6 +31,7 @@ public class LauncherSubsystem extends SubsystemBase {
   private boolean setFlyWheelRPMSuccess; 
   private int flyWheelPower;
   public int manualRPMSet;
+  public double flyWheelTargetPower;
 
   private boolean isExtended; // This variable keeps track of whether the piston is currently extended or not
   private Solenoid extensionSolenoid;
@@ -42,7 +43,7 @@ public class LauncherSubsystem extends SubsystemBase {
 
     extensionSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.EXTENSION_SOLENOID_ID);
     isExtended = false;
-    manualRPMSet = 1;
+    manualRPMSet = 0;
 
     SmartDashboard.putBoolean("Launcher Extended", isExtended);
   }
@@ -104,12 +105,13 @@ public class LauncherSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Fly Wheel Target RPM", flyWheelTargetRPM);
     SmartDashboard.putNumber("Manual RPM set", manualRPMSet);
     SmartDashboard.putNumber("Power", power);
+    SmartDashboard.putNumber("FlyWheel Target Power", flyWheelTargetPower);
   }
 
   /* Set power to the launcher motor */
   public void launch() {
     //m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED));
-    setFlyWheelRPM(Constants.FLY_WHEEL_SPEED);
+    // setFlyWheelRPM(Constants.FLY_WHEEL_SPEED);
     //m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_SPEED);
   }
 
@@ -135,6 +137,10 @@ public class LauncherSubsystem extends SubsystemBase {
   }
   
   public void setFlyWheelPower(double power) {
+    if (Math.abs(power) > Constants.FLY_WHEEL_MAX_POWER) {
+      power = Math.copySign(Constants.FLY_WHEEL_MAX_POWER, power); 
+    }
+
     // m_flyWheel.set(power);
     this.power = power;
 
@@ -158,6 +164,10 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public void setFlyWheelRPM(double RPM) {
+    if (Math.abs(RPM) > Constants.FLY_WHEEL_MAX_RPM) {
+      RPM = Math.copySign(Constants.FLY_WHEEL_MAX_RPM, RPM); 
+    }
+
     flyWheelTargetRPM = RPM;
     if(m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity).equals(REVLibError.kOk)) {
       setFlyWheelRPMSuccess = true;
@@ -239,9 +249,11 @@ public class LauncherSubsystem extends SubsystemBase {
 
 
 
-    int inputManualRPMSet = (int)SmartDashboard.getNumber("Manual RPM set", manualRPMSet);
-    if (inputManualRPMSet != manualRPMSet) {
-      manualRPMSet = inputManualRPMSet;
+    if (SmartDashboard.getNumber("Manual RPM set", manualRPMSet) > 0.1) {
+      flyWheelTargetPower = SmartDashboard.getNumber("FlyWheel Target Power", flyWheelTargetPower);
+      setFlyWheelPower(flyWheelTargetPower);
+      // int inputManualRPMSet = (int)SmartDashboard.getNumber("FlyWheel Target Power", flyWheelTargetPower);
+      //manualRPMSet = inputManualRPMSet;
     }
 
     // int inputTargetRPM = (int)SmartDashboard.getNumber("Target RPM", targetRPM);

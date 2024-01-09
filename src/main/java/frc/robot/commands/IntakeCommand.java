@@ -30,7 +30,7 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {
     m_intakeSubsystem.setPower(this.reverse ? -1 * Constants.UPPER_INTAKE_BAR_SPEED : Constants.UPPER_INTAKE_BAR_SPEED, this.reverse ? -1 * Constants.LOWER_INTAKE_BAR_SPEED : Constants.LOWER_INTAKE_BAR_SPEED);
-    m_feeder_subsystem.setPower(Constants.FEEDER_WHEEL_SPEED);
+    m_feeder_subsystem.setPower(this.reverse ? -1 * Constants.FEEDER_WHEEL_SPEED : Constants.FEEDER_WHEEL_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

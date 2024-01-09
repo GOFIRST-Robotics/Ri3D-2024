@@ -109,8 +109,9 @@ public class Robot extends TimedRobot {
     // Stops recording to data log
     DataLogManager.stop();
 
-    // Record both DS control and joystick data
-    DriverStation.startDataLog(DataLogManager.getLog());
+    m_launcherSubsystem.stop();
+
+    DataLogManager.log("======================================= DISABLED! ================================");
   }
 
   /** This function is called continuously after the robot enters Disabled mode. */
@@ -152,6 +153,8 @@ public class Robot extends TimedRobot {
     // Record both DS control and joystick data
     DriverStation.startDataLog(DataLogManager.getLog());
 
+    // m_launcherSubsystem.setFlyWheelRPM(1000);
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -166,6 +169,8 @@ public class Robot extends TimedRobot {
 
     // Set the LED pattern for teleop
     m_LEDSubsystem.setLEDMode(LEDMode.TELEOP);
+
+    SmartDashboard.putBoolean("Trigger Triggered", false);
   }
 
   /** This function is called periodically during operator control. */
@@ -210,7 +215,10 @@ public class Robot extends TimedRobot {
     new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
 
     // Launcher Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)).whileTrue(new StartEndCommand(() -> m_launcherSubsystem.launch(), () -> m_launcherSubsystem.stop())); // Launch
+    Trigger rightShootingTrigger = new Trigger(() -> controller.getRawAxis(Constants.RIGHT_TRIGGER_AXIS) > 0.5);
+    rightShootingTrigger.whileTrue(new StartEndCommand(() -> m_launcherSubsystem.setFlyWheelPower(Constants.FLY_WHEEL_HIGH_SPEED_POWER), () -> m_launcherSubsystem.stop())); // Launch
+    Trigger leftShootingTrigger = new Trigger(() -> controller.getRawAxis(Constants.LEFT_TRIGGER_AXIS) > 0.5);
+    leftShootingTrigger.whileTrue(new StartEndCommand(() -> m_launcherSubsystem.setFlyWheelPower(Constants.FLY_WHEEL_AMP_SPEED_POWER), () -> m_launcherSubsystem.stop())); // Launch
     new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new FeedCommand(false)); // Feed
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new FeedCommand(true)); // Unfeed
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new InstantCommand(() -> m_launcherSubsystem.toggleExtension())); // Toggle the launcher extension

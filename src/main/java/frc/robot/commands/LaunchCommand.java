@@ -25,7 +25,7 @@ public class LaunchCommand extends Command {
 
     @Override
     public void execute() {
-        double targetSpeed = Constants.FLY_WHEEL_SPEED;
+        double targetSpeed = Constants.FLY_WHEEL_HIGH_SPEED_RPM;
 
         if (Robot.controller.getRawButton(Constants.RIGHT_TRIGGER_AXIS)) {
             m_launcher_subsystem.setFlyWheelPower(targetSpeed);
