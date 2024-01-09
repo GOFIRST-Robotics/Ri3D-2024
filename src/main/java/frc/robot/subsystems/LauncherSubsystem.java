@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -20,10 +22,14 @@ public class LauncherSubsystem extends SubsystemBase {
   // Launcher Motor Controllers
   private CANSparkMax m_flyWheel; // NEO motor
 
-  private SparkPIDController m_flyWheelPIDController;
+  private SparkMaxPIDController m_flyWheelPIDController;
   private RelativeEncoder m_flyWheelEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+  private double power;
   private double flyWheelRPM, flyWheelTargetRPM;
+  private boolean setFlyWheelRPMSuccess; 
+  private int flyWheelPower;
+  public int manualRPMSet;
 
   private boolean isExtended; // This variable keeps track of whether the piston is currently extended or not
   private Solenoid extensionSolenoid;
@@ -34,6 +40,7 @@ public class LauncherSubsystem extends SubsystemBase {
 
     extensionSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.EXTENSION_SOLENOID_ID);
     isExtended = false;
+    manualRPMSet = 1;
   }
 
   public void configureFlyWheel() {
@@ -48,6 +55,9 @@ public class LauncherSubsystem extends SubsystemBase {
 
     m_flyWheel.setInverted(Constants.FLY_WHEEL_INVERT);
 
+    // Encoder object created to display position values
+    m_flyWheelEncoder = m_flyWheel.getEncoder();
+
     /**
      * In order to use PID functionality for a controller, a SparkMaxPIDController object
      * is constructed by calling the getPIDController() method on an existing
@@ -55,18 +65,15 @@ public class LauncherSubsystem extends SubsystemBase {
      */
     m_flyWheelPIDController = m_flyWheel.getPIDController();
 
-    // Encoder object created to display position values
-    m_flyWheelEncoder = m_flyWheel.getEncoder();
-
     // PID coefficients
-    kP = 0.5;
-    kI = 0;
-    kD = 0;
-    kIz = 0;
-    kFF = 0.000015;
-    kMaxOutput = 1;
-    kMinOutput = -1;
-    maxRPM = 5700;
+    kP = Constants.FLY_WHEEL_P;
+    kI = Constants.FLY_WHEEL_I;
+    kD = Constants.FLY_WHEEL_D;
+    kIz = Constants.FLY_WHEEL_IZONE;
+    kFF = Constants.FLY_WHEEL_FF;
+    kMaxOutput = Constants.FLY_WHEEL_K_MAX_OUTPUT;
+    kMinOutput = Constants.FLY_WHEEL_K_MIN_OUTPUT;
+    maxRPM = Constants.FLY_WHEEL_MAX_RPM;
 
     flyWheelRPM = 0;
     flyWheelTargetRPM = 0;
@@ -91,11 +98,15 @@ public class LauncherSubsystem extends SubsystemBase {
     // Logging
     SmartDashboard.putNumber("Fly Wheel RPM", flyWheelRPM);
     SmartDashboard.putNumber("Fly Wheel Target RPM", flyWheelTargetRPM);
+    SmartDashboard.putNumber("Manual RPM set", manualRPMSet);
+    SmartDashboard.putNumber("Power", power);
   }
 
   /* Set power to the launcher motor */
   public void launch() {
-    m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED));
+    //m_flyWheel.set(SmartDashboard.getNumber("Fly Wheel Speed", Constants.FLY_WHEEL_SPEED));
+    setFlyWheelRPM(Constants.FLY_WHEEL_SPEED);
+    //m_feederWheel.set(TalonSRXControlMode.PercentOutput, Constants.FEEDER_WHEEL_SPEED);
   }
 
   /* Solenoid Methods */
@@ -115,7 +126,10 @@ public class LauncherSubsystem extends SubsystemBase {
     }
   }
   
-  public void flyWheelPower(double power) {
+  public void setFlyWheelPower(double power) {
+    // m_flyWheel.set(power);
+    this.power = power;
+
     /**
      * PIDController objects are commanded to a set point using the 
      * SetReference() method.
@@ -130,13 +144,22 @@ public class LauncherSubsystem extends SubsystemBase {
      *  com.revrobotics.CANSparkMax.ControlType.kVelocity
      *  com.revrobotics.CANSparkMax.ControlType.kVoltage
      */
-    double setPoint = power*maxRPM;
-    m_flyWheelPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+    m_flyWheel.set(power);
+    // double setPoint = power*maxRPM;
+    // m_flyWheelPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
   }
 
   public void setFlyWheelRPM(double RPM) {
     flyWheelTargetRPM = RPM;
-    m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity);
+    if(m_flyWheelPIDController.setReference(RPM, CANSparkMax.ControlType.kVelocity).equals(REVLibError.kOk)) {
+      setFlyWheelRPMSuccess = true;
+    }
+    setFlyWheelRPMSuccess = false;
+
+    SmartDashboard.putNumber("PID Output Max", m_flyWheelPIDController.getOutputMax());
+    SmartDashboard.putNumber("PID Output Min", m_flyWheelPIDController.getOutputMin());
+
+    SmartDashboard.putBoolean("Set Fly Wheel RPM Success", setFlyWheelRPMSuccess);
   }
 
   public double getFlyWheelRPM() {
@@ -159,34 +182,64 @@ public class LauncherSubsystem extends SubsystemBase {
   }
   
   public void flyWheelPIDSmartDashboard() {
-    // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
-    double i = SmartDashboard.getNumber("I Gain", 0);
-    double d = SmartDashboard.getNumber("D Gain", 0);
-    double iz = SmartDashboard.getNumber("I Zone", 0);
-    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);
+    if(manualRPMSet == 1) {
+      // read PID coefficients from SmartDashboard
+      double p = SmartDashboard.getNumber("P Gain", 0);
+      double i = SmartDashboard.getNumber("I Gain", 0);
+      double d = SmartDashboard.getNumber("D Gain", 0);
+      double iz = SmartDashboard.getNumber("I Zone", 0);
+      double ff = SmartDashboard.getNumber("Feed Forward", 0);
+      double max = SmartDashboard.getNumber("Max Output", 0);
+      double min = SmartDashboard.getNumber("Min Output", 0);
 
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { m_flyWheelPIDController.setP(p); kP = p; }
-    if((i != kI)) { m_flyWheelPIDController.setI(i); kI = i; }
-    if((d != kD)) { m_flyWheelPIDController.setD(d); kD = d; }
-    if((iz != kIz)) { m_flyWheelPIDController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { m_flyWheelPIDController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      m_flyWheelPIDController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
+      // if PID coefficients on SmartDashboard have changed, write new values to controller
+      if((p != kP)) { m_flyWheelPIDController.setP(p); kP = p; }
+      if((i != kI)) { m_flyWheelPIDController.setI(i); kI = i; }
+      if((d != kD)) { m_flyWheelPIDController.setD(d); kD = d; }
+      if((iz != kIz)) { m_flyWheelPIDController.setIZone(iz); kIz = iz; }
+      if((ff != kFF)) { m_flyWheelPIDController.setFF(ff); kFF = ff; }
+      if((max != kMaxOutput) || (min != kMinOutput)) { 
+        m_flyWheelPIDController.setOutputRange(min, max); 
+        kMinOutput = min; kMaxOutput = max; 
+      }
     }
 
-    double inputTargetRPM = SmartDashboard.getNumber("Fly Wheel Target RPM", 0);
+    int inputTargetRPM = (int)SmartDashboard.getNumber("Fly Wheel Target RPM", 0);
 
     if (inputTargetRPM != flyWheelTargetRPM) {
       setFlyWheelRPM(inputTargetRPM);
     }
+
+    SmartDashboard.putNumber("Fly Wheel Target RPM Check", flyWheelTargetRPM);
     
     flyWheelRPM = m_flyWheelEncoder.getVelocity();
 
     SmartDashboard.putNumber("Fly Wheel RPM", flyWheelRPM);
+    power = SmartDashboard.getNumber("Power", power);
+    // setFlyWheelPower(power);
+
+
+
+    int inputManualRPMSet = (int)SmartDashboard.getNumber("Manual RPM set", manualRPMSet);
+    if (inputManualRPMSet != manualRPMSet) {
+      manualRPMSet = inputManualRPMSet;
+    }
+
+    // int inputTargetRPM = (int)SmartDashboard.getNumber("Target RPM", targetRPM);
+
+    // double setPoint = 0;
+    // if (manualRPMSet == 1) {
+    //   targetRPM = inputTargetRPM;
+    //   setPoint = (double)inputTargetRPM;
+    // } else {
+    //   setPoint = m_stick.getY()*maxRPM;
+    // }
+
+    // m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+
+    // // m_motor.set(m_stick.getY());
+    SmartDashboard.putNumber("RPM", m_flyWheelEncoder.getVelocity());
+    SmartDashboard.putNumber("PID Max", m_flyWheelPIDController.getOutputMax());
+    SmartDashboard.putNumber("PID Min", m_flyWheelPIDController.getOutputMin());
   }
 }
