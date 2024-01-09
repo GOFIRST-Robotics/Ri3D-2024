@@ -67,7 +67,8 @@ public class VisionSubsystem extends SubsystemBase {
         return distance;
     }
 
-    public boolean InRange(double distanceThreshold, double angleThreshold) {
+    public boolean InRange(double distanceThreshold, double distanceThresholdRange,
+    double angleThreshold, double angleThresholdRange) {
         if (!hasTarget) {
             return false;
         }
@@ -77,8 +78,8 @@ public class VisionSubsystem extends SubsystemBase {
         double angleToTarget = bestTarget.getYaw(); // Assuming yaw gives the angle
         double skewTarget = bestTarget.getSkew();
 
-        boolean inRange = Math.abs(distanceToTarget) <= distanceThreshold && Math.abs(angleToTarget) <= angleThreshold;
-
+        //boolean inRange = Math.abs(distanceToTarget) <= distanceThreshold && Math.abs(angleToTarget) <= angleThreshold;
+        boolean inRange = Math.abs(Math.abs(distanceToTarget) - distanceThreshold) >= distanceThresholdRange && Math.abs(Math.abs(angleToTarget) - angleThreshold) >= angleThresholdRange;
         SmartDashboard.putNumber("t_distance", distanceToTarget);
         
         SmartDashboard.putNumber("t_angle", angleToTarget);
