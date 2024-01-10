@@ -37,19 +37,21 @@ public final class Constants {
     public static final int START_BUTTON = 10;
 
     // Talon SRX CAN IDs //
-    public static final int CLIMBER_MOTOR_ID = 6;
+    // public static final int CLIMBER_MOTOR_ID = 6;
 
     // Victor PWM Ports //
     public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 0;
-    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 1;
-    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 3;
+    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 7;
+    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 8;
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
+
+    public static final int CLIMBER_MOTOR_ID_DRIVETRAIN = 3;
 
     // Spark MAX CAN IDs //
     public static final int LOWER_INTAKE_BAR_MOTOR_ID = 5;
     public static final int UPPER_INTAKE_BAR_MOTOR_ID = 3;
     public static final int FLY_WHEEL_MOTOR_ID = 2;
-    public static final int FEEDER_WHEEL_MOTOR_ID = 4;
+    public static final int FEEDER_WHEEL_MOTOR_ID = 4;  
 
     // Other PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -80,8 +82,7 @@ public final class Constants {
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
-    public static final double CLIMBER_SPEED = 0.8;
-
+    public static final double CLIMBER_SPEED = 0.6;
     // Launcher Constants //
     public static final boolean FLY_WHEEL_INVERT = false;
     public static final double FLY_WHEEL_HIGH_SPEED_RPM = 1000;

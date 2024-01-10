@@ -32,11 +32,11 @@ public class PowerSubsystem extends SubsystemBase {
         totalPower = m_revPDH.getTotalPower(); // Get the total power of all channels, the bus voltage multiplied by the current with the units Watts.
         totalEnergy = m_revPDH.getTotalEnergy(); // Get the total energy of all channels with units Joules.
 
-        SmartDashboard.putNumber("Voltage", voltage);
-        SmartDashboard.putNumber("Total Current", totalCurrent);
-        SmartDashboard.putNumber("Total Power", totalPower);
-        SmartDashboard.putNumber("Total Energy", totalEnergy);
-        SmartDashboard.putNumber("Temperature", temperatureCelsius);
+        // SmartDashboard.putNumber("Voltage", voltage);
+        // SmartDashboard.putNumber("Total Current", totalCurrent);
+        // SmartDashboard.putNumber("Total Power", totalPower);
+        // SmartDashboard.putNumber("Total Energy", totalEnergy);
+        // SmartDashboard.putNumber("Temperature", temperatureCelsius);
         
         numChannels = m_revPDH.getNumChannels();
 
@@ -46,22 +46,22 @@ public class PowerSubsystem extends SubsystemBase {
         for(int i = 0; i < currentsArray.length; i++) {
             currentsArray[i] = m_revPDH.getCurrent(i);
         }
-        SmartDashboard.putNumberArray("Currents", currentsArray);
-        SmartDashboard.putNumber("Temperature", numChannels);
+        // SmartDashboard.putNumberArray("Currents", currentsArray);
+        // SmartDashboard.putNumber("Temperature", numChannels);
 
-        SmartDashboard.putNumber("Left Front Drive Motor Current", currentsArray[Constants.LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Right Front Drive Motor Current", currentsArray[Constants.RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Left Rear Drive Motor Current", currentsArray[Constants.LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Right Rear Drive Motor Current", currentsArray[Constants.RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Left Front Drive Motor Current", currentsArray[Constants.LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Right Front Drive Motor Current", currentsArray[Constants.RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Left Rear Drive Motor Current", currentsArray[Constants.LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Right Rear Drive Motor Current", currentsArray[Constants.RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
 
-        SmartDashboard.putNumber("FlyWheel Motor Current", currentsArray[Constants.FLY_WHEEL_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Upper Intake Motor Current", currentsArray[Constants.UPPER_INTAKE_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Lower Intake Motor Current", currentsArray[Constants.LOWER_INTAKE_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Feeder Motor Current", currentsArray[Constants.FEEDER_WHEEL_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Climber Drive Motor Current", currentsArray[Constants.CLIMBER_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("FlyWheel Motor Current", currentsArray[Constants.FLY_WHEEL_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Upper Intake Motor Current", currentsArray[Constants.UPPER_INTAKE_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Lower Intake Motor Current", currentsArray[Constants.LOWER_INTAKE_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Feeder Motor Current", currentsArray[Constants.FEEDER_WHEEL_MOTOR_PDH_CHANNEL]);
+        // SmartDashboard.putNumber("Climber Drive Motor Current", currentsArray[Constants.CLIMBER_MOTOR_PDH_CHANNEL]);
 
-        SmartDashboard.putBoolean("Switched Channel State", switchedChannelState);
-        SmartDashboard.putBoolean("Reported Switched Channel State", getSwitchedChannelState());
+        // SmartDashboard.putBoolean("Switched Channel State", switchedChannelState);
+        // SmartDashboard.putBoolean("Reported Switched Channel State", getSwitchedChannelState());
     }
 
     public void setSwitchedChannel(boolean state) {

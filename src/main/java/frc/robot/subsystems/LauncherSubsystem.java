@@ -211,27 +211,27 @@ public class LauncherSubsystem extends SubsystemBase {
     // int testing = (int)SmartDashboard.getNumber("Launcher Extended", 1);
     // double testingDouble = SmartDashboard.getNumber("Launcher Extended", 1);
 
-    if(manualRPMSet == 1) {
-      // read PID coefficients from SmartDashboard
-      double p = SmartDashboard.getNumber("P Gain", 0);
-      double i = SmartDashboard.getNumber("I Gain", 0);
-      double d = SmartDashboard.getNumber("D Gain", 0);
-      double iz = SmartDashboard.getNumber("I Zone", 0);
-      double ff = SmartDashboard.getNumber("Feed Forward", 0);
-      double max = SmartDashboard.getNumber("Max Output", 0);
-      double min = SmartDashboard.getNumber("Min Output", 0);
+    // if(manualRPMSet == 1) {
+    //   // read PID coefficients from SmartDashboard
+    //   double p = SmartDashboard.getNumber("P Gain", 0);
+    //   double i = SmartDashboard.getNumber("I Gain", 0);
+    //   double d = SmartDashboard.getNumber("D Gain", 0);
+    //   double iz = SmartDashboard.getNumber("I Zone", 0);
+    //   double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    //   double max = SmartDashboard.getNumber("Max Output", 0);
+    //   double min = SmartDashboard.getNumber("Min Output", 0);
 
-      // if PID coefficients on SmartDashboard have changed, write new values to controller
-      if((p != kP)) { m_flyWheelPIDController.setP(p); kP = p; }
-      if((i != kI)) { m_flyWheelPIDController.setI(i); kI = i; }
-      if((d != kD)) { m_flyWheelPIDController.setD(d); kD = d; }
-      if((iz != kIz)) { m_flyWheelPIDController.setIZone(iz); kIz = iz; }
-      if((ff != kFF)) { m_flyWheelPIDController.setFF(ff); kFF = ff; }
-      if((max != kMaxOutput) || (min != kMinOutput)) { 
-        m_flyWheelPIDController.setOutputRange(min, max); 
-        kMinOutput = min; kMaxOutput = max; 
-      }
-    }
+    //   // if PID coefficients on SmartDashboard have changed, write new values to controller
+    //   if((p != kP)) { m_flyWheelPIDController.setP(p); kP = p; }
+    //   if((i != kI)) { m_flyWheelPIDController.setI(i); kI = i; }
+    //   if((d != kD)) { m_flyWheelPIDController.setD(d); kD = d; }
+    //   if((iz != kIz)) { m_flyWheelPIDController.setIZone(iz); kIz = iz; }
+    //   if((ff != kFF)) { m_flyWheelPIDController.setFF(ff); kFF = ff; }
+    //   if((max != kMaxOutput) || (min != kMinOutput)) { 
+    //     m_flyWheelPIDController.setOutputRange(min, max); 
+    //     kMinOutput = min; kMaxOutput = max; 
+    //   }
+    // }
 
     int inputTargetRPM = (int)SmartDashboard.getNumber("Fly Wheel Target RPM", 0);
 
