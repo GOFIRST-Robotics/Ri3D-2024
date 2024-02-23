@@ -37,15 +37,15 @@ public final class Constants {
     public static final int START_BUTTON = 10;
 
     // Talon SRX CAN IDs //
-    // public static final int CLIMBER_MOTOR_ID = 6;
+    public static final int CLIMBER_MOTOR_ID_TALON_SRX = 9;
 
     // Victor PWM Ports //
     public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 0;
-    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 7;
-    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 8;
+    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 1;
+    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 3;
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
 
-    public static final int CLIMBER_MOTOR_ID_DRIVETRAIN = 3;
+    public static final int CLIMBER_MOTOR_ID_VICTOR_SP = 3;
 
     // Spark MAX CAN IDs //
     public static final int LOWER_INTAKE_BAR_MOTOR_ID = 5;
@@ -103,7 +103,7 @@ public final class Constants {
     public static final double FLY_WHEEL_MAX_POWER = 0.8;
 
     // REV PH Channels //
-    public static final int EXTENSION_SOLENOID_ID = 1;
+    public static final int EXTENSION_SOLENOID_ID = 0;
 
     // Rev PDH Constants //
     public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;
@@ -116,6 +116,9 @@ public final class Constants {
     public static final int FLY_WHEEL_MOTOR_PDH_CHANNEL = 16;
     public static final int CLIMBER_MOTOR_PDH_CHANNEL = 17;
     public static final int FEEDER_WHEEL_MOTOR_PDH_CHANNEL = 18;
+
+    // Pneumatics Constants //
+    public static final int COMPRESSOR_CAN_ID = 7;
 
     // Apriltag Vision Constants //
     public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7);
