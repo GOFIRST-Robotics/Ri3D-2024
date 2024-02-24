@@ -69,8 +69,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     resetEncoders(); // Zero the encoders
 
-    rightFilter = new SlewRateLimiter(0.2);
-    leftFilter = new SlewRateLimiter(0.2);
+    rightFilter = new SlewRateLimiter(5);
+    leftFilter = new SlewRateLimiter(5);
 
     // These objects help with fancy path following
     odometry = new DifferentialDriveOdometry(getRotation2D(), getLeftDistance(), getRightDistance());
@@ -93,8 +93,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   /* Set power to the drivetrain motors */
   public void drive(double leftPercentPower, double rightPercentPower) {
-    // leftPercentPower = leftFilter.calculate(leftPercentPower);
-    // rightPercentPower = rightFilter.calculate(rightPercentPower);
+    leftPercentPower = leftFilter.calculate(leftPercentPower);
+    rightPercentPower = rightFilter.calculate(rightPercentPower);
 
     m_leftFrontMotor.set(direction * leftPercentPower);
     m_leftRearMotor.set(direction * leftPercentPower);
