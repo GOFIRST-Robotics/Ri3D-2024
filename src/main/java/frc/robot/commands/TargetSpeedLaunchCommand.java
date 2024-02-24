@@ -9,17 +9,19 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class SimpleLaunchCommand extends Command {
+public class TargetSpeedLaunchCommand extends Command {
     private LauncherSubsystem m_launcher_subsystem;
     private FeederSubsystem m_feeder_subsystem;
     private double power;
+    private int targetRPM;
 
     /** Default feed command: runs the feed when a disc is intaked until it is ready to be shot. */
-    public SimpleLaunchCommand(double power) {
+    public TargetSpeedLaunchCommand(double power, int targetRPM) {
         m_launcher_subsystem = Robot.m_launcherSubsystem;
         m_feeder_subsystem = Robot.m_feederSubsystem;
         this.power = power;
-        addRequirements(m_launcher_subsystem);
+        this.targetRPM = targetRPM;
+        addRequirements(m_launcher_subsystem, m_feeder_subsystem);
     }
 
     @Override
@@ -28,6 +30,10 @@ public class SimpleLaunchCommand extends Command {
     @Override
     public void execute() {
         m_launcher_subsystem.setFlyWheelPower(power);
+
+        if(m_launcher_subsystem.getFlyWheelRPM() >= targetRPM) {
+            m_feeder_subsystem.setPower(-Constants.FEEDER_WHEEL_SPEED);
+        }
     }
 
     // Called once the command ends or is interrupted.

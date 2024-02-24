@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
+import frc.robot.commands.autonomous.DriveBack;
+import frc.robot.commands.autonomous.Score1Auto;
+import frc.robot.commands.autonomous.Score2Auto;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
@@ -72,9 +75,13 @@ public class Robot extends TimedRobot {
     configureButtonBindings(); // Bind our commands to physical buttons on a controller
 
     // Add our Autonomous Routines to the chooser //
-		autonChooser.setDefaultOption("Default Auto", new AutonomousMode_Default());
-    autonChooser.addOption("Square Auto", new SquareAutonomous());
-    autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
+		autonChooser.setDefaultOption("Default Auto", new DriveBack());
+    // autonChooser.addOption("Square Auto", new SquareAutonomous());
+    // autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
+    autonChooser.addOption("Do Nothing", new InstantCommand());
+    autonChooser.addOption("Drive Back (2 sec)", new DriveBack());
+    autonChooser.addOption("Score 1", new Score1Auto());
+    autonChooser.addOption("Score 2", new Score2Auto());
 		SmartDashboard.putData("Auto Mode", autonChooser);
 
     m_driveSubsystem.setDefaultCommand(new DriveCommand());

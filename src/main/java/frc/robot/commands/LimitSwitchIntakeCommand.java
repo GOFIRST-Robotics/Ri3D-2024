@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeCommand extends Command {
+public class LimitSwitchIntakeCommand extends Command {
   private IntakeSubsystem m_intakeSubsystem;
   private FeederSubsystem m_feeder_subsystem;
 
   private boolean reverse;
 
   /** Creates a new IntakeCommand. */
-  public IntakeCommand(boolean reverse) {
+  public LimitSwitchIntakeCommand(boolean reverse) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intakeSubsystem = Robot.m_intakeSubsystem;
     m_feeder_subsystem = Robot.m_feederSubsystem;
@@ -40,7 +40,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_feeder_subsystem.getFeederLimitSwitch();
   }
 
   // Called once the command ends or is interrupted.
