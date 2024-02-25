@@ -23,15 +23,15 @@ public class Score2Auto extends SequentialCommandGroup {
   public Score2Auto() { // List commands here sequentially
     addCommands(
       new ParallelRaceGroup(
-        new Wait(2), 
-        new TargetSpeedLaunchCommand(Constants.FLY_WHEEL_HIGH_SPEED_POWER, Constants.FLY_WHEEL_HIGH_SPEED_RPM)
+        new Wait(2.5), 
+        new TargetSpeedLaunchCommand(Constants.FLY_WHEEL_HIGH_SPEED_POWER, Constants.FLY_WHEEL_HIGH_SPEED_RPM, 0.5)
       )
     );
     addCommands(
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
           new TimedGyroDriveStraightCommand(1.5, -0.4),
-          new TimedGyroDriveStraightCommand(1.5, -0.2),
+          new TimedGyroDriveStraightCommand(1, -0.2),
           new Wait(0.5)
         ),
         new SequentialCommandGroup(
@@ -47,7 +47,7 @@ public class Score2Auto extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
         new SequentialCommandGroup(
           new TimedGyroDriveStraightCommand(1.5, 0.4),
-          new TimedGyroDriveStraightCommand(0.75, 0.2),
+          new TimedGyroDriveStraightCommand(1, 0.2),
           new Wait(4)
         ),
         new SequentialCommandGroup(
@@ -56,11 +56,11 @@ public class Score2Auto extends SequentialCommandGroup {
             new Wait(0.2), 
             new FeedCommand(false)
           ),
-          new TargetSpeedLaunchCommand(Constants.FLY_WHEEL_HIGH_SPEED_POWER, Constants.FLY_WHEEL_HIGH_SPEED_RPM)
+          new TargetSpeedLaunchCommand(Constants.FLY_WHEEL_HIGH_SPEED_POWER, Constants.FLY_WHEEL_HIGH_SPEED_RPM, 0.5)
         )
       )
     );
 
-    addCommands(new TimedGyroDriveStraightCommand(2, -0.4));
+    addCommands(new TimedGyroDriveStraightCommand(1.75, -0.4));
   }
 }

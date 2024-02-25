@@ -326,10 +326,10 @@ public class LauncherSubsystem extends SubsystemBase {
 
     // // m_motor.set(m_stick.getY());
     SmartDashboard.putNumber("RPM", m_flyWheelEncoder.getVelocity());
-    SmartDashboard.putNumber("PID Max", m_flyWheelPIDController.getOutputMax());
-    SmartDashboard.putNumber("PID Min", m_flyWheelPIDController.getOutputMin());
+    // SmartDashboard.putNumber("PID Max", m_flyWheelPIDController.getOutputMax());
+    // SmartDashboard.putNumber("PID Min", m_flyWheelPIDController.getOutputMin());
 
-    SmartDashboard.putNumber("Compressor Current", m_compressor.getCurrent());
-    SmartDashboard.putBoolean("Compressor Enabled", m_compressor.isEnabled());
+    // SmartDashboard.putNumber("Compressor Current", m_compressor.getCurrent());
+    // SmartDashboard.putBoolean("Compressor Enabled", m_compressor.isEnabled());
   }
 }

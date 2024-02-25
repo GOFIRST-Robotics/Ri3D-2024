@@ -206,13 +206,13 @@ public class DriveSubsystem extends SubsystemBase {
 
     CURRENT_DRIVE_SCALE = driveScaleChooser.getSelected(); // Continously update the desired drive scale
 
-    SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
-    SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
+    // SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
+    // SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
 
-    double leftFront = SmartDashboard.getNumber("Left Front Power Pct", 0.0);
-    double leftRear = SmartDashboard.getNumber("Left Rear Power Pct", 0.0);
-    double rightFront = SmartDashboard.getNumber("Right Front Power Pct", 0.0);
-    double rightRear = SmartDashboard.getNumber("Right Rear Power Pct", 0.0);
+    // double leftFront = SmartDashboard.getNumber("Left Front Power Pct", 0.0);
+    // double leftRear = SmartDashboard.getNumber("Left Rear Power Pct", 0.0);
+    // double rightFront = SmartDashboard.getNumber("Right Front Power Pct", 0.0);
+    // double rightRear = SmartDashboard.getNumber("Right Rear Power Pct", 0.0);
 
     // if(leftFront != 0.0) {
     //   setLeftFrontPowerPercent(leftFront);
