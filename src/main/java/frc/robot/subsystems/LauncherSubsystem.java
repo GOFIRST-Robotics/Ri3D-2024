@@ -12,8 +12,11 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,6 +25,7 @@ public class LauncherSubsystem extends SubsystemBase {
   // Launcher Motor Controllers
   private CANSparkMax m_flyWheel; // NEO motor
 
+  private Compressor m_compressor;
   private PowerSubsystem m_powerSubsystem;
   private SparkMaxPIDController m_flyWheelPIDController;
   private RelativeEncoder m_flyWheelEncoder;
@@ -35,17 +39,34 @@ public class LauncherSubsystem extends SubsystemBase {
 
   private boolean isExtended; // This variable keeps track of whether the piston is currently extended or not
   private Solenoid extensionSolenoid;
-
+  // private Solenoid solenoid3, solenoid4, solenoid5, solenoid6, solenoid7, solenoid8, solenoid9, solenoid10, solenoid11, solenoid12;
+  // private DoubleSolenoid solenoid2;
   /** Subsystem for controlling the launcher fly wheel */
   public LauncherSubsystem(PowerSubsystem powerSubsystem) {
     configureFlyWheel();
     m_powerSubsystem = powerSubsystem;
 
+    m_compressor = new Compressor(Constants.COMPRESSOR_CAN_ID, PneumaticsModuleType.REVPH);
+
     extensionSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.EXTENSION_SOLENOID_ID);
+    // solenoid2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+    // solenoid3 = new Solenoid(PneumaticsModuleType.REVPH, 2);
+    // solenoid4 = new Solenoid(PneumaticsModuleType.REVPH, 3);
+    // solenoid5 = new Solenoid(PneumaticsModuleType.REVPH, 4);
+    // solenoid6 = new Solenoid(PneumaticsModuleType.REVPH, 5);
+    // solenoid7 = new Solenoid(PneumaticsModuleType.REVPH, 6);
+    // solenoid8 = new Solenoid(PneumaticsModuleType.REVPH, 7);
+    // solenoid9 = new Solenoid(PneumaticsModuleType.REVPH, 8);
+    // solenoid10 = new Solenoid(PneumaticsModuleType.REVPH, 9);
+    // solenoid11 = new Solenoid(PneumaticsModuleType.REVPH, 10);
+    // solenoid12 = new Solenoid(PneumaticsModuleType.REVPH, 11);
+
     isExtended = false;
     manualRPMSet = 0;
 
     SmartDashboard.putBoolean("Launcher Extended", isExtended);
+
+    m_compressor.enableDigital();
   }
 
   public void configureFlyWheel() {
@@ -117,14 +138,46 @@ public class LauncherSubsystem extends SubsystemBase {
 
   /* Solenoid Methods */
   public void extend() {
-    m_powerSubsystem.setSwitchedChannel(false);
-    // extensionSolenoid.set(true);
+    // When using PDH switched channel for solenoid
+    m_powerSubsystem.setSwitchedChannel(false); //  Logic is inverted
+
+    // When using REV PH solenoid
+    extensionSolenoid.set(true);
+
+    // solenoid2.set(Value.kForward);
+    // solenoid3.set(true);
+    // solenoid4.set(true);
+    // solenoid5.set(true);
+    // solenoid6.set(true);
+    // solenoid7.set(true);
+    // solenoid8.set(true);
+    // solenoid9.set(true);
+    // solenoid10.set(true);
+    // solenoid11.set(true);
+    // solenoid12.set(true);
+
     isExtended = true;
     SmartDashboard.putBoolean("Launcher Extended", isExtended);
   }
   public void retract() {
-    m_powerSubsystem.setSwitchedChannel(true);
-    // extensionSolenoid.set(false);
+    // When using PDH switched channel for solenoid
+    m_powerSubsystem.setSwitchedChannel(true); // Logic is inverted
+
+    // When using REV PH solenoid
+    extensionSolenoid.set(false);
+
+    // solenoid2.set(Value.kReverse);
+    // solenoid3.set(false);
+    // solenoid4.set(false);
+    // solenoid5.set(false);
+    // solenoid6.set(false);
+    // solenoid7.set(false);
+    // solenoid8.set(false);
+    // solenoid9.set(false);
+    // solenoid10.set(false);
+    // solenoid11.set(false);
+    // solenoid12.set(false);
+
     isExtended = false;
     SmartDashboard.putBoolean("Launcher Extended", isExtended);
   }
@@ -197,6 +250,9 @@ public class LauncherSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     flyWheelPIDSmartDashboard();
+
+    SmartDashboard.putNumber("Compressor Current", m_compressor.getCurrent());
+    SmartDashboard.putBoolean("Compressor Enabled", m_compressor.isEnabled());
   }
   
   public void flyWheelPIDSmartDashboard() {
@@ -270,7 +326,10 @@ public class LauncherSubsystem extends SubsystemBase {
 
     // // m_motor.set(m_stick.getY());
     SmartDashboard.putNumber("RPM", m_flyWheelEncoder.getVelocity());
-    SmartDashboard.putNumber("PID Max", m_flyWheelPIDController.getOutputMax());
-    SmartDashboard.putNumber("PID Min", m_flyWheelPIDController.getOutputMin());
+    // SmartDashboard.putNumber("PID Max", m_flyWheelPIDController.getOutputMax());
+    // SmartDashboard.putNumber("PID Min", m_flyWheelPIDController.getOutputMin());
+
+    // SmartDashboard.putNumber("Compressor Current", m_compressor.getCurrent());
+    // SmartDashboard.putBoolean("Compressor Enabled", m_compressor.isEnabled());
   }
 }

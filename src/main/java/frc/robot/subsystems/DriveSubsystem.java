@@ -7,6 +7,7 @@ import frc.robot.Constants;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -35,6 +36,9 @@ public class DriveSubsystem extends SubsystemBase {
   private DifferentialDriveOdometry odometry;
   private DifferentialDriveKinematics kinematics;
 
+  SlewRateLimiter rightFilter;
+  SlewRateLimiter leftFilter;
+
   private int direction = 1; // This variable is here because we wanted to be able to flip which side of the robot is the 'front'
   
   private AHRS navx = new AHRS(SerialPort.Port.kUSB); // Instantiate a NavX Gyroscope
@@ -61,9 +65,12 @@ public class DriveSubsystem extends SubsystemBase {
     leftDriveEncoder = new Encoder(Constants.LEFT_ENCODER_CHANNEL_A, Constants.LEFT_ENCODER_CHANNEL_B);
     rightDriveEncoder = new Encoder(Constants.RIGHT_ENCODER_CHANNEL_A, Constants.RIGHT_ENCODER_CHANNEL_B, true);
     leftDriveEncoder.setDistancePerPulse(Constants.WHEEL_CIRCUMFERENCE / Constants.LEFT_ENCODER_COUNTS_PER_REV);
-    leftDriveEncoder.setDistancePerPulse(Constants.WHEEL_CIRCUMFERENCE / Constants.RIGHT_ENCODER_COUNTS_PER_REV);
+    rightDriveEncoder.setDistancePerPulse(Constants.WHEEL_CIRCUMFERENCE / Constants.RIGHT_ENCODER_COUNTS_PER_REV);
 
     resetEncoders(); // Zero the encoders
+
+    rightFilter = new SlewRateLimiter(5);
+    leftFilter = new SlewRateLimiter(5);
 
     // These objects help with fancy path following
     odometry = new DifferentialDriveOdometry(getRotation2D(), getLeftDistance(), getRightDistance());
@@ -76,12 +83,19 @@ public class DriveSubsystem extends SubsystemBase {
     driveScaleChooser.addOption("25%", 0.25);
 
     SmartDashboard.putData("Drivetrain Speed", driveScaleChooser);
+    SmartDashboard.putNumber("Left Front Power Pct", 0);
+    SmartDashboard.putNumber("Left Rear Power Pct", 0);
+    SmartDashboard.putNumber("Right Front Power Pct", 0);
+    SmartDashboard.putNumber("Right Rear Power Pct", 0);
 
     System.out.println("NavX Connected: " + navx.isConnected());
   }
 
   /* Set power to the drivetrain motors */
   public void drive(double leftPercentPower, double rightPercentPower) {
+    leftPercentPower = leftFilter.calculate(leftPercentPower);
+    rightPercentPower = rightFilter.calculate(rightPercentPower);
+
     m_leftFrontMotor.set(direction * leftPercentPower);
     m_leftRearMotor.set(direction * leftPercentPower);
     m_rightFrontMotor.set(direction * rightPercentPower);
@@ -168,6 +182,20 @@ public class DriveSubsystem extends SubsystemBase {
   public void setDirection(DIRECTION direction) {
     this.direction = direction.direction;
   }
+
+  // private void setLeftFrontPowerPercent(double percentPower) {
+  //   m_leftFrontMotor.set(direction * percentPower);
+  // }
+  // private void setLeftRearPowerPercent(double percentPower) {
+  //   m_leftRearMotor.set(direction * percentPower);
+  // }
+  // private void setRightFrontPowerPercent(double percentPower) {
+  //   m_rightFrontMotor.set(direction * percentPower);
+  // }
+  // private void setRightRearPowerPercent(double percentPower) {
+  //   m_rightRearMotor.set(direction * percentPower);
+  // }
+
   public void toggleDirection() {
     this.direction *= -1;
   }
@@ -178,8 +206,37 @@ public class DriveSubsystem extends SubsystemBase {
 
     CURRENT_DRIVE_SCALE = driveScaleChooser.getSelected(); // Continously update the desired drive scale
 
-    SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
-    SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
+    // SmartDashboard.putNumber("Left Drive Encoder", leftDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
+    // SmartDashboard.putNumber("Right Drive Encoder", rightDriveEncoder.getRaw()); // Publish raw encoder data to SmartDashboard
+
+    // double leftFront = SmartDashboard.getNumber("Left Front Power Pct", 0.0);
+    // double leftRear = SmartDashboard.getNumber("Left Rear Power Pct", 0.0);
+    // double rightFront = SmartDashboard.getNumber("Right Front Power Pct", 0.0);
+    // double rightRear = SmartDashboard.getNumber("Right Rear Power Pct", 0.0);
+
+    // if(leftFront != 0.0) {
+    //   setLeftFrontPowerPercent(leftFront);
+    // } else {
+    //   setLeftFrontPowerPercent(0);
+    // }
+
+    // if(leftRear != 0.0) {
+    //   setLeftRearPowerPercent(leftRear);
+    // } else {
+    //   setLeftRearPowerPercent(0);
+    // }
+    
+    // if(rightFront != 0.0) {
+    //   setRightFrontPowerPercent(rightFront);
+    // } else {
+    //   setRightFrontPowerPercent(0);
+    // }
+
+    // if(rightRear != 0.0) {
+    //   setRightRearPowerPercent(rightRear);
+    // } else {
+    //   setRightRearPowerPercent(0);
+    // }
   }
 
   // Helps with flipping which side is considered the "front" of the robot

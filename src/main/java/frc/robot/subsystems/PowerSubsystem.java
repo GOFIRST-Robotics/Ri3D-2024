@@ -36,7 +36,7 @@ public class PowerSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Total Current", totalCurrent);
         // SmartDashboard.putNumber("Total Power", totalPower);
         // SmartDashboard.putNumber("Total Energy", totalEnergy);
-        // SmartDashboard.putNumber("Temperature", temperatureCelsius);
+        SmartDashboard.putNumber("Temperature", temperatureCelsius);
         
         numChannels = m_revPDH.getNumChannels();
 
@@ -47,12 +47,12 @@ public class PowerSubsystem extends SubsystemBase {
             currentsArray[i] = m_revPDH.getCurrent(i);
         }
         // SmartDashboard.putNumberArray("Currents", currentsArray);
-        // SmartDashboard.putNumber("Temperature", numChannels);
+        // SmartDashboard.putNumber("Num Channels", numChannels);
 
-        // SmartDashboard.putNumber("Left Front Drive Motor Current", currentsArray[Constants.LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
-        // SmartDashboard.putNumber("Right Front Drive Motor Current", currentsArray[Constants.RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
-        // SmartDashboard.putNumber("Left Rear Drive Motor Current", currentsArray[Constants.LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
-        // SmartDashboard.putNumber("Right Rear Drive Motor Current", currentsArray[Constants.RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Left Front Drive Motor Current", currentsArray[Constants.LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Right Front Drive Motor Current", currentsArray[Constants.RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Left Rear Drive Motor Current", currentsArray[Constants.LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Right Rear Drive Motor Current", currentsArray[Constants.RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
 
         // SmartDashboard.putNumber("FlyWheel Motor Current", currentsArray[Constants.FLY_WHEEL_MOTOR_PDH_CHANNEL]);
         // SmartDashboard.putNumber("Upper Intake Motor Current", currentsArray[Constants.UPPER_INTAKE_MOTOR_PDH_CHANNEL]);
